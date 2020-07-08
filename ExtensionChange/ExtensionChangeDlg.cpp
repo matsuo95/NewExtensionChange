@@ -294,7 +294,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
 		if (NULL == pIDlist) {
-			strcpy_s(chSelectPath, MAX_PATH, chDefFolder);
+			//strcpy_s(chSelectPath, MAX_PATH, chDefFolder);
 		}
 		else {
 			SHGetPathFromIDList(pIDlist, lpSelectPath);
