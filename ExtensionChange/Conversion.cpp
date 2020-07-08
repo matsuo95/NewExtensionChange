@@ -14,15 +14,7 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	str_AfterExtension = CStringA(m_AfterExtension).GetBuffer();
 	str_Filepath = CStringA(Filepath).GetBuffer();
 
-	//ãtèá
-	reverse(begin(str_Filepath), end(str_Filepath));
-	reverse(begin(str_PreviousExtension), end(str_PreviousExtension));
-	reverse(begin(str_AfterExtension), end(str_AfterExtension));
-
-	str_Filepath.replace(str_Filepath.find(str_PreviousExtension), str_PreviousExtension.length(), str_AfterExtension);
-
-	//å≥Ç…ñﬂÇ∑
-	reverse(begin(str_Filepath), end(str_Filepath));
+	str_Filepath.replace(str_Filepath.rfind(str_PreviousExtension), str_PreviousExtension.length(), str_AfterExtension);
 
 	CString return_Filepath;
 	return_Filepath = str_Filepath.c_str();
