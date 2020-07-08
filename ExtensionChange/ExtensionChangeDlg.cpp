@@ -318,9 +318,9 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	// ファイルの場合に必要
 	CString PreviousExtension;
 	m_edit_previous_extension.GetWindowTextW(PreviousExtension);
+	string str_PreviousExtension = CStringA(PreviousExtension).GetBuffer();
 
 	string str_filePath;
-	string str_PreviousExtension = CStringA(PreviousExtension).GetBuffer();
 
 	// ファイルが検索できる間繰り返します。
 	do
@@ -348,8 +348,9 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		else
 		{
 			str_filePath = CStringA(filePath).GetBuffer();
+			auto pos = str_filePath.find(str_PreviousExtension);
 
-			if (str_filePath.find(str_PreviousExtension) != std::string::npos && dp.count(filePath) == 0) {
+			if (pos != std::string::npos && pos == (str_filePath.length() - str_PreviousExtension.length()) && dp.count(filePath) == 0) {
 				dp.insert(filePath);
 				m_list_displaypath.AddString(filePath);
 			}
