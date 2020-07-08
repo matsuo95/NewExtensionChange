@@ -14,7 +14,12 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	str_AfterExtension = CStringA(m_AfterExtension).GetBuffer();
 	str_Filepath = CStringA(Filepath).GetBuffer();
 
-	str_Filepath.replace(str_Filepath.rfind(str_PreviousExtension), str_PreviousExtension.length(), str_AfterExtension);
+	auto pos = str_Filepath.rfind(str_PreviousExtension);
+	auto len = str_PreviousExtension.length();
+
+	if (pos != std::string::npos && pos == (str_Filepath.length() - len)) {
+		str_Filepath.replace(pos, len, str_AfterExtension);
+	}
 
 	CString return_Filepath;
 	return_Filepath = str_Filepath.c_str();
