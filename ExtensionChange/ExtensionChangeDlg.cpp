@@ -293,10 +293,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 		browsInfo.iImage = (int)NULL;
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
-		if (NULL == pIDlist) {
-			//strcpy_s(chSelectPath, MAX_PATH, chDefFolder);
-		}
-		else {
+		if(pIDlist) {
 			SHGetPathFromIDList(pIDlist, lpSelectPath);
 			bRet = TRUE;
 			pMalloc->Free(pIDlist);
