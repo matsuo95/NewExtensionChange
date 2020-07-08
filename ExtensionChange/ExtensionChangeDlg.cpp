@@ -238,6 +238,8 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
+
+	dp.clear();
 }
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
@@ -348,7 +350,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		else
 		{
 			str_filePath = CStringA(filePath).GetBuffer();
-			auto pos = str_filePath.find(str_PreviousExtension);
+			auto pos = str_filePath.rfind(str_PreviousExtension);
 
 			if (pos != std::string::npos && pos == (str_filePath.length() - str_PreviousExtension.length()) && dp.count(filePath) == 0) {
 				dp.insert(filePath);
