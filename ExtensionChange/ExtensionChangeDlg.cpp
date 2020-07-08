@@ -78,6 +78,7 @@ BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON4, &CExtensionChangeDlg::OnBnClickedReferenceListButton)
 	ON_BN_CLICKED(IDC_BUTTON3, &CExtensionChangeDlg::OnBnClickedConversionListButton)
 	ON_BN_CLICKED(IDC_BUTTON5, &CExtensionChangeDlg::OnBnClickedReferenceFolderButton)
+	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -119,6 +120,8 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 
 	CString after_extension_default("198");
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
+
+	DragAcceptFiles();
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -203,6 +206,14 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 		while (pos)
 		{
 			filePath = selDlg.GetNextPathName(pos);
+
+			if (dp.count(filePath) == 1) {
+				err = 1;
+			}
+			else {
+				dp.insert(filePath);
+			}
+
 			if (!err)
 			{
 				lbErr = m_list_displaypath.InsertString(-1, filePath);
@@ -360,4 +371,19 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	} while (bResult);
 
 	return TRUE;
+}
+
+void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	UINT length = DragQueryFile(hDropInfo, 0, NULL, 0);
+
+	CString csfile;
+	DragQueryFile(hDropInfo, 0, csfile.GetBuffer(length + 1), length + 1);
+	csfile.ReleaseBuffer();
+
+	m_list_displaypath.AddString(csfile);
+
+	CDialogEx::OnDropFiles(hDropInfo);
 }

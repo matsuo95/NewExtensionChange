@@ -43,4 +43,5 @@ public:
 
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
 	BOOL GetFileList(CString path,bool flag);
+	afx_msg void OnDropFiles(HDROP hDropInfo);
 };
