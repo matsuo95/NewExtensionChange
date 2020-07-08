@@ -121,8 +121,6 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 	CString after_extension_default("198");
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
 
-	DragAcceptFiles();
-
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
@@ -213,6 +211,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 			else {
 				dp.insert(filePath);
 			}
+
+			//AddListStr(filePath, &m_list_displaypath);
 
 			if (!err)
 			{
@@ -365,7 +365,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 
 			if (pos != std::string::npos && pos == (str_filePath.length() - str_PreviousExtension.length()) && dp.count(filePath) == 0) {
 				dp.insert(filePath);
-				m_list_displaypath.AddString(filePath);
+				AddListStr(filePath,&m_list_displaypath);
 			}
 		}
 	} while (bResult);
@@ -373,17 +373,18 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	return TRUE;
 }
 
-void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
+int CExtensionChangeDlg::AddListStr(CString strText, CListBox* pcListBox)
 {
-	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	// 現在のスクロール幅
+	int nNowWidth = pcListBox->GetHorizontalExtent();
 
-	UINT length = DragQueryFile(hDropInfo, 0, NULL, 0);
+	// 追加する文字列幅の取得
+	CDC* pListDC = pcListBox->GetDC();
+	CSize cTextSize = pListDC->GetTextExtent(strText);
+	pListDC->LPtoDP(&cTextSize);
+	if (nNowWidth < cTextSize.cx)
+		pcListBox->SetHorizontalExtent(cTextSize.cx);
 
-	CString csfile;
-	DragQueryFile(hDropInfo, 0, csfile.GetBuffer(length + 1), length + 1);
-	csfile.ReleaseBuffer();
-
-	m_list_displaypath.AddString(csfile);
-
-	CDialogEx::OnDropFiles(hDropInfo);
+	// 文字列の追加
+	return pcListBox->AddString(strText);
 }
