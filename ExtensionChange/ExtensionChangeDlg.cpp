@@ -17,7 +17,7 @@
 #define new DEBUG_NEW
 #endif
 
-set<CString> dp;
+set<CString> listbox_str;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
@@ -208,11 +208,11 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 		{
 			filePath = selDlg.GetNextPathName(pos);
 
-			if (dp.count(filePath) == 1) {
+			if (listbox_str.count(filePath) == 1) {
 				err = 1;
 			}
 			else {
-				dp.insert(filePath);
+				listbox_str.insert(filePath);
 			}
 
 			if (!err)
@@ -250,7 +250,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
 
-	dp.clear();
+	listbox_str.clear();
 }
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
@@ -287,11 +287,6 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 {
 	LPMALLOC pMalloc;
 	BOOL bRet = FALSE;
-
-	char chSelectPath[sizeof(lpSelectPath)];
-	char chDefFolder[sizeof(lpDefFolder)];
-	WideCharToMultiByte(CP_ACP, 0, lpSelectPath, -1, chSelectPath, sizeof(chSelectPath), NULL, NULL);
-	WideCharToMultiByte(CP_ACP, 0, lpDefFolder, -1, chDefFolder, sizeof(chDefFolder), NULL, NULL);
 
 	if (SUCCEEDED(SHGetMalloc(&pMalloc))) {
 		BROWSEINFO browsInfo;
@@ -363,8 +358,8 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			str_filePath = CStringA(filePath).GetBuffer();
 			auto pos = str_filePath.rfind(str_PreviousExtension);
 
-			if (pos != std::string::npos && pos == (str_filePath.length() - str_PreviousExtension.length()) && dp.count(filePath) == 0) {
-				dp.insert(filePath);
+			if (pos != std::string::npos && pos == (str_filePath.length() - str_PreviousExtension.length()) && listbox_str.count(filePath) == 0) {
+				listbox_str.insert(filePath);
 				AddListStr(filePath,&m_list_displaypath);
 			}
 		}
@@ -400,7 +395,10 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		DragQueryFile(hDropInfo, i, csfile.GetBuffer(length + 1), length + 1);
 		csfile.ReleaseBuffer();
 
-		AddListStr(csfile, &m_list_displaypath);
+		if (listbox_str.count(csfile) == 0) {
+			listbox_str.insert(csfile);
+			AddListStr(csfile, &m_list_displaypath);
+		}
 
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
