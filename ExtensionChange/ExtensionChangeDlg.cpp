@@ -180,7 +180,6 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 
 void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 {
-	
 	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
 
 	CString txt1("(*."), txt2(")|*."), txt3(";||");
@@ -188,8 +187,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	CString filter(txt1 + m_text_previous_extension + txt2 + m_text_previous_extension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
-	CFileDialog     selDlg(TRUE, NULL, NULL,
-		OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
 	int             err = 0, lbErr = 0;
 
 	// ファイル名リスト用メモリ確保
@@ -223,7 +221,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 			}
 			if (err) break;
 		}
-		UpdateData(FALSE);
+		UpdateData(TRUE);
 	}
 	strBuf.ReleaseBuffer();
 
