@@ -46,4 +46,6 @@ public:
 
 	int AddListStr(CString strText, CListBox* pcListBox);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
+	afx_msg void OnBnClickedclearButton();
+	afx_msg void OnBnClickedClearButton();
 };

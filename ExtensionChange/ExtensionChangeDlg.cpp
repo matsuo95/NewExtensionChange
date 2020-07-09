@@ -80,6 +80,7 @@ BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON5, &CExtensionChangeDlg::OnBnClickedReferenceFolderButton)
 	ON_WM_DROPFILES()
 	ON_WM_DROPFILES()
+	ON_BN_CLICKED(IDC_BUTTON1, &CExtensionChangeDlg::OnBnClickedClearButton)
 END_MESSAGE_MAP()
 
 
@@ -401,3 +402,12 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 	}
 }
 	
+
+void CExtensionChangeDlg::OnBnClickedClearButton()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+
+	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
+	plist->ResetContent();
+	listbox_str.clear();
+}
