@@ -1,5 +1,3 @@
-﻿  ExtensionChange.cpp
-  ExtensionChangeDlg.cpp
-c:\users\松尾友樹\desktop\extensionchange\extensionchange\extensionchangedlg.cpp(261): warning C4066: ワイド文字定数の文字列は無視されます。
-  コードを生成中...
+﻿  ExtensionChangeDlg.cpp
+c:\users\松尾友樹\desktop\extensionchange\extensionchange\extensionchangedlg.cpp(258): warning C4066: ワイド文字定数の文字列は無視されます。
   ExtensionChange.vcxproj -> C:\Users\松尾友樹\Desktop\ExtensionChange\Debug\ExtensionChange.exe

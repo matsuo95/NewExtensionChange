@@ -212,12 +212,9 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 				dp.insert(filePath);
 			}
 
-			//AddListStr(filePath, &m_list_displaypath);
-
 			if (!err)
 			{
-				lbErr = m_list_displaypath.InsertString(-1, filePath);
-				if (lbErr == LB_ERR || lbErr == LB_ERRSPACE) err = 1;
+				AddListStr(filePath, &m_list_displaypath);
 			}
 			if (err) break;
 		}
