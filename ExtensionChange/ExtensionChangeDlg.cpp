@@ -10,14 +10,11 @@
 
 #include "Conversion.h"
 #include <atlpath.h>
-#include <set>
 
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-std::set<CString> listbox_str;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 

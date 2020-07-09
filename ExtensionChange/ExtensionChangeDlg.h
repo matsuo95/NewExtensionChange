@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <set>
 
 // CExtensionChangeDlg ダイアログ
 class CExtensionChangeDlg : public CDialogEx
@@ -47,4 +48,6 @@ public:
 	int AddListStr(CString strText, CListBox* pcListBox);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnBnClickedClearButton();
+
+	std::set<CString> listbox_str;
 };
