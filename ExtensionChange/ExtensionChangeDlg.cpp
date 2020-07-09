@@ -180,6 +180,7 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 
 void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 {
+	
 	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
 
 	CString txt1("(*."), txt2(")|*."), txt3(";||");
@@ -243,9 +244,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 		after_conversion.RenameExtension(filepath);
 	}
 
-	CString complete_notification;
-	complete_notification.Format(_T("変換を行いました "));
-	AfxMessageBox(complete_notification);
+	AfxMessageBox(_T("変換を行いました "));
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
