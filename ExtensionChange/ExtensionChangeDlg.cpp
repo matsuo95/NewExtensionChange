@@ -56,6 +56,8 @@ END_MESSAGE_MAP()
 CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EXTENSIONCHANGE_DIALOG, pParent)
 	
+	, m_text_previous_extension(_T(""))
+	, m_text_after_extension(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -66,6 +68,8 @@ void CExtensionChangeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT2, m_edit_previous_extension);
 	DDX_Control(pDX, IDC_EDIT3, m_edit_after_extension);
 	DDX_Control(pDX, IDC_LIST1, m_list_displaypath);
+	DDX_Text(pDX, IDC_EDIT2, m_text_previous_extension);
+	DDX_Text(pDX, IDC_EDIT3, m_text_after_extension);
 }
 
 BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
@@ -176,12 +180,11 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 
 void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 {
-	CString PreviousExtension;
-	m_edit_previous_extension.GetWindowTextW(PreviousExtension);
+	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
 
 	CString txt1("(*."), txt2(")|*."), txt3(";||");
 
-	CString filter(txt1 + PreviousExtension + txt2 + PreviousExtension + txt3);
+	CString filter(txt1 + m_text_previous_extension + txt2 + m_text_previous_extension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
 	CFileDialog     selDlg(TRUE, NULL, NULL,
@@ -229,12 +232,11 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 void CExtensionChangeDlg::OnBnClickedConversionListButton()
 {
 	CString filepath;
-	CString PreviousExtension, AfterExtension;
 
-	m_edit_previous_extension.GetWindowTextW(PreviousExtension);
-	m_edit_after_extension.GetWindowTextW(AfterExtension);
+	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
+	m_edit_after_extension.GetWindowTextW(m_text_after_extension);
 
-	Conversion after_conversion = Conversion(PreviousExtension, AfterExtension);
+	Conversion after_conversion = Conversion(m_text_previous_extension, m_text_after_extension);
 
 	for (int i = 0; i < m_list_displaypath.GetCount(); i++) {
 		m_list_displaypath.GetText(i, filepath);
@@ -331,9 +333,8 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	if (!bResult) return FALSE;
 
 	// ファイルの場合に必要
-	CString PreviousExtension;
-	m_edit_previous_extension.GetWindowTextW(PreviousExtension);
-	std::string str_PreviousExtension = CStringA(PreviousExtension).GetBuffer();
+	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
+	std::string str_PreviousExtension = CStringA(m_text_previous_extension).GetBuffer();
 
 	std::string str_filePath;
 

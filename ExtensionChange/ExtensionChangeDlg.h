@@ -51,4 +51,6 @@ public:
 	BOOL GetFileList(CString path,bool flag);
 
 	int AddListStr(CString strText, CListBox* pcListBox);
+	CString m_text_previous_extension;
+	CString m_text_after_extension;
 };
