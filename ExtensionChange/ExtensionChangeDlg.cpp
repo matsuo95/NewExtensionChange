@@ -230,6 +230,13 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 
 void CExtensionChangeDlg::OnBnClickedConversionListButton()
 {
+	int listbox_count = m_list_displaypath.GetCount();
+
+	if (listbox_count == 0) {
+		AfxMessageBox(_T("変換するファイルがありません"));
+		return;
+	}
+
 	CString filepath;
 
 	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
@@ -237,12 +244,12 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 
 	Conversion after_conversion = Conversion(m_text_previous_extension, m_text_after_extension);
 
-	for (int i = 0; i < m_list_displaypath.GetCount(); i++) {
+	for (int i = 0; i < listbox_count; i++) {
 		m_list_displaypath.GetText(i, filepath);
 		after_conversion.RenameExtension(filepath);
 	}
 
-	AfxMessageBox(_T("変換を行いました "));
+	AfxMessageBox(_T("ファイルの変換を行いました "));
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
