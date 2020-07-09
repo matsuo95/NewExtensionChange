@@ -343,7 +343,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 
 		// 検索した結果がディレクトリの場合
 		CString filePath = fileFind.GetFilePath();
-		if (fileFind.IsDirectory() && (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) || flag)
+		if (fileFind.IsDirectory() && ((((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) || flag))
 		{
 			flag = false;
 			// サブディレクトリを検索する場合、再帰呼出しします。
