@@ -45,4 +45,5 @@ public:
 	BOOL GetFileList(CString path,bool flag);
 
 	int AddListStr(CString strText, CListBox* pcListBox);
+	afx_msg void OnDropFiles(HDROP hDropInfo);
 };

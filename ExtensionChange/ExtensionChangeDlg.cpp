@@ -79,6 +79,7 @@ BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CExtensionChangeDlg::OnBnClickedConversionListButton)
 	ON_BN_CLICKED(IDC_BUTTON5, &CExtensionChangeDlg::OnBnClickedReferenceFolderButton)
 	ON_WM_DROPFILES()
+	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -120,6 +121,8 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 
 	CString after_extension_default("198");
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
+
+	DragAcceptFiles();
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -385,3 +388,21 @@ int CExtensionChangeDlg::AddListStr(CString strText, CListBox* pcListBox)
 	// 文字列の追加
 	return pcListBox->AddString(strText);
 }
+
+void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
+		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
+
+		CString csfile;
+		DragQueryFile(hDropInfo, i, csfile.GetBuffer(length + 1), length + 1);
+		csfile.ReleaseBuffer();
+
+		AddListStr(csfile, &m_list_displaypath);
+
+		CDialogEx::OnDropFiles(hDropInfo);
+	}
+}
+	
