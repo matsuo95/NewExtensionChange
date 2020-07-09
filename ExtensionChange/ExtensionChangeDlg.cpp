@@ -395,10 +395,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		DragQueryFile(hDropInfo, i, csfile.GetBuffer(length + 1), length + 1);
 		csfile.ReleaseBuffer();
 
-		if (listbox_str.count(csfile) == 0) {
-			listbox_str.insert(csfile);
-			AddListStr(csfile, &m_list_displaypath);
-		}
+		GetFileList(csfile, true);
 
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
