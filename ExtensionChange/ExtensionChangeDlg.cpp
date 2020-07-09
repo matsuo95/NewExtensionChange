@@ -17,7 +17,7 @@
 #define new DEBUG_NEW
 #endif
 
-set<CString> listbox_str;
+std::set<CString> listbox_str;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
@@ -327,9 +327,9 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	// ファイルの場合に必要
 	CString PreviousExtension;
 	m_edit_previous_extension.GetWindowTextW(PreviousExtension);
-	string str_PreviousExtension = CStringA(PreviousExtension).GetBuffer();
+	std::string str_PreviousExtension = CStringA(PreviousExtension).GetBuffer();
 
-	string str_filePath;
+	std::string str_filePath;
 
 	// ファイルが検索できる間繰り返します。
 	do
