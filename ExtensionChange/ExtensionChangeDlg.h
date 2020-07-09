@@ -38,16 +38,17 @@ public:
 
 	CListBox m_list_displaypath;
 
+	std::set<CString> listbox_str;
+
 	afx_msg void OnBnClickedReferenceListButton();
 	afx_msg void OnBnClickedConversionListButton();
 	afx_msg void OnBnClickedReferenceFolderButton();
+	afx_msg void OnBnClickedClearButton();
+
+	afx_msg void OnDropFiles(HDROP hDropInfo);
 
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
 	BOOL GetFileList(CString path,bool flag);
 
 	int AddListStr(CString strText, CListBox* pcListBox);
-	afx_msg void OnDropFiles(HDROP hDropInfo);
-	afx_msg void OnBnClickedClearButton();
-
-	std::set<CString> listbox_str;
 };

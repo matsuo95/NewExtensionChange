@@ -268,6 +268,15 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	}
 }
 
+void CExtensionChangeDlg::OnBnClickedClearButton()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+
+	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
+	plist->ResetContent();
+	listbox_str.clear();
+}
+
 int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
 {
 	switch (uMsg)
@@ -366,22 +375,6 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	return TRUE;
 }
 
-int CExtensionChangeDlg::AddListStr(CString strText, CListBox* pcListBox)
-{
-	// 現在のスクロール幅
-	int nNowWidth = pcListBox->GetHorizontalExtent();
-
-	// 追加する文字列幅の取得
-	CDC* pListDC = pcListBox->GetDC();
-	CSize cTextSize = pListDC->GetTextExtent(strText);
-	pListDC->LPtoDP(&cTextSize);
-	if (nNowWidth < cTextSize.cx)
-		pcListBox->SetHorizontalExtent(cTextSize.cx);
-
-	// 文字列の追加
-	return pcListBox->AddString(strText);
-}
-
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
@@ -397,14 +390,20 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
-}
-	
+}	
 
-void CExtensionChangeDlg::OnBnClickedClearButton()
+int CExtensionChangeDlg::AddListStr(CString strText, CListBox* pcListBox)
 {
-	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+	// 現在のスクロール幅
+	int nNowWidth = pcListBox->GetHorizontalExtent();
 
-	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
-	plist->ResetContent();
-	listbox_str.clear();
+	// 追加する文字列幅の取得
+	CDC* pListDC = pcListBox->GetDC();
+	CSize cTextSize = pListDC->GetTextExtent(strText);
+	pListDC->LPtoDP(&cTextSize);
+	if (nNowWidth < cTextSize.cx)
+		pcListBox->SetHorizontalExtent(cTextSize.cx);
+
+	// 文字列の追加
+	return pcListBox->AddString(strText);
 }
