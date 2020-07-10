@@ -20,7 +20,7 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	if (str_PreviousExtension == "" && str_Filepath.rfind(".") == std::string::npos) {
 		str_Filepath.insert(str_Filepath.length(), "." + str_AfterExtension);
 	}
-	else if (pos == (str_Filepath.length() - len)) {
+	else if (str_PreviousExtension != "" && pos == (str_Filepath.length() - len)) {
 		str_Filepath.replace(pos, len, str_AfterExtension);
 	}
 

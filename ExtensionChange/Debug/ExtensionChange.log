@@ -1,4 +1,4 @@
 ﻿  ExtensionChangeDlg.cpp
 c:\users\松尾友樹\desktop\extensionchange\extensionchange\extensionchangedlg.cpp(265): warning C4066: ワイド文字定数の文字列は無視されます。
-c:\users\松尾友樹\desktop\extensionchange\extensionchange\extensionchangedlg.cpp(405): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+c:\users\松尾友樹\desktop\extensionchange\extensionchange\extensionchangedlg.cpp(399): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   ExtensionChange.vcxproj -> C:\Users\松尾友樹\Desktop\ExtensionChange\Debug\ExtensionChange.exe
