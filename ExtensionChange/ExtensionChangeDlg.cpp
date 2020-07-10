@@ -370,7 +370,13 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			str_filePath = CStringA(filePath).GetBuffer();
 			auto pos = str_filePath.rfind(str_PreviousExtension);
 
-			if (pos == (str_filePath.length() - str_PreviousExtension.length()) && listbox_str.count(filePath) == 0) {
+			if(str_PreviousExtension == ""){
+				/*if (str_filePath.rfind(".") == std::string::npos && listbox_str.count(filePath) == 0) {
+					listbox_str.insert(filePath);
+					AddListStr(filePath, &m_list_displaypath);
+				}*/
+			}
+			else if (pos == (str_filePath.length() - str_PreviousExtension.length()) && listbox_str.count(filePath) == 0) {
 				listbox_str.insert(filePath);
 				AddListStr(filePath,&m_list_displaypath);
 			}
