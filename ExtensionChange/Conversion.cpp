@@ -17,7 +17,7 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	auto pos = str_Filepath.rfind(str_PreviousExtension);
 	auto len = str_PreviousExtension.length();
 
-	if (str_Filepath.rfind(".") == std::string::npos) {
+	if (str_PreviousExtension == "" && str_Filepath.rfind(".") == std::string::npos) {
 		str_Filepath.insert(str_Filepath.length(), "." + str_AfterExtension);
 	}
 	else if (pos == (str_Filepath.length() - len)) {
