@@ -370,22 +370,16 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			str_filePath = CStringA(filePath).GetBuffer();
 			auto pos = str_filePath.rfind(str_PreviousExtension);
 
-			if (fileFind.IsDirectory()) {
+			if (fileFind.IsDirectory()) { //ディレクトリ
 				continue;
 			}
-			else if (listbox_str.count(filePath) == 1) {
+			else if (listbox_str.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (str_PreviousExtension == "" && str_filePath.rfind(".") != std::string::npos) {
+			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) { // 指定した拡張子ではない
 				continue;
 			}
-			else if (str_PreviousExtension != "" && str_filePath.rfind(".") == std::string::npos) {
-				continue;
-			}
-			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) {
-				continue;
-			}
-			else if (str_filePath.at(pos-1) != '.') {
+			else if (str_filePath.rfind(".") != std::string::npos && str_filePath.at(pos - 1) != '.') {// 実際のファイルに拡張子があり、かつ表記も一致する
 				continue;
 			}
 			else {
