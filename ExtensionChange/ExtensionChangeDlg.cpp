@@ -373,10 +373,13 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			if (fileFind.IsDirectory()) {
 				continue;
 			}
+			else if (listbox_str.count(filePath) == 1) {
+				continue;
+			}
 			else if (str_PreviousExtension == "" && str_filePath.rfind(".") != std::string::npos) {
 				continue;
 			}
-			else if (listbox_str.count(filePath) == 1) {
+			else if (str_PreviousExtension != "" && str_filePath.rfind(".") == std::string::npos) {
 				continue;
 			}
 			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) {
