@@ -385,6 +385,9 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) {
 				continue;
 			}
+			else if (str_filePath.at(pos-1) != '.') {
+				continue;
+			}
 			else {
 				listbox_str.insert(filePath);
 				AddListStr(filePath, &m_list_displaypath);
