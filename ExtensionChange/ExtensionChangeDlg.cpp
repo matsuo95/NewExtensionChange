@@ -379,7 +379,10 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) { // 指定した拡張子ではない
 				continue;
 			}
-			else if (str_filePath.rfind(".") != std::string::npos && str_filePath.at(pos - 1) != '.') {// 実際のファイルに拡張子があり、かつ表記も一致する
+			else if (str_filePath.rfind(".") != std::string::npos && str_filePath.at(pos - 1) != '.') {
+				continue;
+			}
+			else if (str_PreviousExtension != "" && str_filePath.rfind(".") == std::string::npos) {
 				continue;
 			}
 			else {

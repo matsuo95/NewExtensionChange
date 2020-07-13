@@ -15,13 +15,13 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	str_Filepath = CStringA(Filepath).GetBuffer();
 
 	auto pos = str_Filepath.rfind(str_PreviousExtension);
-	auto len = str_PreviousExtension.length();
+	auto previous_extension_length = str_PreviousExtension.length();
 
 	if (str_PreviousExtension == "" && str_Filepath.rfind(".") == std::string::npos) {
 		str_Filepath.insert(str_Filepath.length(), "." + str_AfterExtension);
 	}
-	else if (str_PreviousExtension != "" && pos == (str_Filepath.length() - len)) {
-		str_Filepath.replace(pos, len, str_AfterExtension);
+	else if (str_PreviousExtension != "" && pos == (str_Filepath.length() - previous_extension_length)) {
+		str_Filepath.replace(pos, previous_extension_length, str_AfterExtension);
 	}
 
 	CString return_Filepath;
