@@ -9,7 +9,7 @@ Conversion::Conversion(CString previous_extension, CString after_extension)
 CString Conversion::ConvertExtensionString(CString Filepath) {
 	// ï∂éöóÒÇÃïœçXÇÃÇ›
 	
-	std::string str_PreviousExtension, str_AfterExtension, str_Filepath;
+	/*std::string str_PreviousExtension, str_AfterExtension, str_Filepath;
 	str_PreviousExtension = CStringA(m_PreviousExtension).GetBuffer();
 	str_AfterExtension = CStringA(m_AfterExtension).GetBuffer();
 	str_Filepath = CStringA(Filepath).GetBuffer();
@@ -25,9 +25,16 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	}
 
 	CString return_Filepath;
-	return_Filepath = str_Filepath.c_str();
+	return_Filepath = str_Filepath.c_str();*/
 
-	return return_Filepath;
+	if (m_PreviousExtension == L'' && Filepath.Find(L'.') == -1) {
+		Filepath += (L'.' + m_AfterExtension);
+	}
+	else if (_tcslen(Filepath) - Filepath.ReverseFind('.') - 1 == m_PreviousExtension) {
+		Filepath.Replace(m_PreviousExtension, m_AfterExtension);
+	}
+
+	return Filepath;
 }
 
 void Conversion::RenameExtension(CString Filepath) {

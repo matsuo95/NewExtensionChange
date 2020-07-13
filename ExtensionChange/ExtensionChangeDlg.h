@@ -21,7 +21,6 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
 
-
 // 実装
 protected:
 	HICON m_hIcon;
