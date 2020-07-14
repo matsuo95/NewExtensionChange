@@ -13,7 +13,8 @@ CString Conversion::ConvertExtensionString(CString filePath) {
 		filePath += (L'.' + m_afterExtension);
 	}
 	else if (filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) == m_previousExtension) {
-		filePath.Replace(m_previousExtension, m_afterExtension);
+		filePath.Delete(filePath.ReverseFind(L'.') + 1, _tcslen(filePath) - filePath.ReverseFind(L'.') - 1);
+		filePath += m_afterExtension;
 	}
 
 	return filePath;
