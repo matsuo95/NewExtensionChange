@@ -183,7 +183,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
 	CString txt1(" Files (*."), txt2(")|*."), txt3(";||");
-
 	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
@@ -262,15 +261,15 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	char dir[MAX_PATH] = { '\0' };
 
 	const int tchrSize = sizeof(dir) + 1;
-	TCHAR tchrText2[tchrSize] = { _T('¥0') };
-	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText2, tchrSize);
+	TCHAR tchrText[tchrSize] = { _T('¥0') };
+	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText, tchrSize);
 
 	UpdateData(TRUE);
 
-	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText2, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (bRes) {
-		GetFileList(tchrText2,true);
+		GetFileList(tchrText,true);
 	}
 }
 
