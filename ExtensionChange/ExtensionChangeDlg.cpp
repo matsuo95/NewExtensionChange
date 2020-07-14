@@ -336,7 +336,6 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	// ファイル検索ができない場合、終了します。
 	if (!bResult) return FALSE;
 
-	// ファイルの場合に必要
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
 	// ファイルが検索できる間繰り返します。
