@@ -32,12 +32,12 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	CEdit m_edit_previous_extension;
-	CEdit m_edit_after_extension;
+	CEdit m_edit_previousExtension;
+	CEdit m_edit_afterExtension;
 
-	CListBox m_list_displaypath;
+	CListBox m_list_filePath;
 
-	std::set<CString> listbox_str;
+	std::set<CString> listBox;
 
 	afx_msg void OnBnClickedReferenceListButton();
 	afx_msg void OnBnClickedConversionListButton();
@@ -50,6 +50,6 @@ public:
 	BOOL GetFileList(CString path,bool flag);
 
 	int AddListStr(CString strText, CListBox* pcListBox);
-	CString m_text_previous_extension;
-	CString m_text_after_extension;
+	CString m_text_previousExtension;
+	CString m_text_afterExtension;
 };

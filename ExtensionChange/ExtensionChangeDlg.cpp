@@ -56,8 +56,8 @@ END_MESSAGE_MAP()
 CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EXTENSIONCHANGE_DIALOG, pParent)
 	
-	, m_text_previous_extension(_T(""))
-	, m_text_after_extension(_T(""))
+	, m_text_previousExtension(_T(""))
+	, m_text_afterExtension(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -65,11 +65,11 @@ CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 void CExtensionChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT2, m_edit_previous_extension);
-	DDX_Control(pDX, IDC_EDIT3, m_edit_after_extension);
-	DDX_Control(pDX, IDC_LIST1, m_list_displaypath);
-	DDX_Text(pDX, IDC_EDIT2, m_text_previous_extension);
-	DDX_Text(pDX, IDC_EDIT3, m_text_after_extension);
+	DDX_Control(pDX, IDC_EDIT2, m_edit_previousExtension);
+	DDX_Control(pDX, IDC_EDIT3, m_edit_afterExtension);
+	DDX_Control(pDX, IDC_LIST1, m_list_filePath);
+	DDX_Text(pDX, IDC_EDIT2, m_text_previousExtension);
+	DDX_Text(pDX, IDC_EDIT3, m_text_afterExtension);
 }
 
 BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
@@ -180,11 +180,11 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 
 void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 {
-	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
 	CString txt1(" Files (*."), txt2(")|*."), txt3(";||");
 
-	CString filter(m_text_previous_extension + txt1 + m_text_previous_extension + txt2 + m_text_previous_extension + txt3);
+	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
@@ -208,16 +208,16 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 		{
 			filePath = selDlg.GetNextPathName(pos);
 
-			if (listbox_str.count(filePath) == 1) {
+			if (listBox.count(filePath) == 1) {
 				err = 1;
 			}
 			else {
-				listbox_str.insert(filePath);
+				listBox.insert(filePath);
 			}
 
 			if (!err)
 			{
-				AddListStr(filePath, &m_list_displaypath);
+				AddListStr(filePath, &m_list_filePath);
 			}
 			if (err) break;
 		}
@@ -230,23 +230,23 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 
 void CExtensionChangeDlg::OnBnClickedConversionListButton()
 {
-	int listbox_count = m_list_displaypath.GetCount();
+	int listboxCount = m_list_filePath.GetCount();
 
-	if (listbox_count == 0) {
+	if (listboxCount == 0) {
 		AfxMessageBox(_T("変換するファイルがありません"));
 		return;
 	}
 
-	CString filepath;
+	CString filePath;
 
-	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
-	m_edit_after_extension.GetWindowTextW(m_text_after_extension);
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	m_edit_afterExtension.GetWindowTextW(m_text_afterExtension);
 
-	Conversion after_conversion = Conversion(m_text_previous_extension, m_text_after_extension);
+	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
-	for (int i = 0; i < listbox_count; i++) {
-		m_list_displaypath.GetText(i, filepath);
-		after_conversion.RenameExtension(filepath);
+	for (int i = 0; i < listboxCount; i++) {
+		m_list_filePath.GetText(i, filePath);
+		extensionConversion.RenameExtension(filePath);
 	}
 
 	AfxMessageBox(_T("ファイルの変換を行いました "));
@@ -254,7 +254,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
 
-	listbox_str.clear();
+	listBox.clear();
 }
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
@@ -280,7 +280,7 @@ void CExtensionChangeDlg::OnBnClickedClearButton()
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
-	listbox_str.clear();
+	listBox.clear();
 }
 
 int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
@@ -337,10 +337,10 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	if (!bResult) return FALSE;
 
 	// ファイルの場合に必要
-	m_edit_previous_extension.GetWindowTextW(m_text_previous_extension);
-	std::string str_PreviousExtension = CStringA(m_text_previous_extension).GetBuffer();
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	/*std::string str_PreviousExtension = CStringA(m_text_previousExtension).GetBuffer();
 
-	std::string str_filePath;
+	std::string str_filePath;*/
 
 	// ファイルが検索できる間繰り返します。
 	do
@@ -367,27 +367,47 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		// ファイルの場合
 		else
 		{
-			str_filePath = CStringA(filePath).GetBuffer();
-			auto pos = str_filePath.rfind(str_PreviousExtension);
+			//str_filePath = CStringA(filePath).GetBuffer();
+			//auto pos = str_filePath.rfind(str_PreviousExtension);
+
+			//if (fileFind.IsDirectory()) { //ディレクトリ
+			//	continue;
+			//}
+			//else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
+			//	continue;
+			//}
+			//else if (pos != (str_filePath.length() - str_PreviousExtension.length())) { // 指定した拡張子ではない
+			//	continue;
+			//}
+			//else if (str_filePath.rfind(".") != std::string::npos && str_filePath.at(pos - 1) != '.') {
+			//	continue;
+			//}
+			//else if (str_PreviousExtension != "" && str_filePath.rfind(".") == std::string::npos) {
+			//	continue;
+			//}
+			//else {
+			//	listBox.insert(filePath);
+			//	AddListStr(filePath, &m_list_filePath);
+			//}
 
 			if (fileFind.IsDirectory()) { //ディレクトリ
 				continue;
 			}
-			else if (listbox_str.count(filePath) == 1) { //既にリストボックスに存在
+			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (pos != (str_filePath.length() - str_PreviousExtension.length())) { // 指定した拡張子ではない
+			else if (m_text_previousExtension == L"" && filePath.Find(L'.') != -1) { //変換前拡張子がなし、実際の拡張子はあり
 				continue;
 			}
-			else if (str_filePath.rfind(".") != std::string::npos && str_filePath.at(pos - 1) != '.') {
+			else if (m_text_previousExtension != L"" && filePath.Find(L'.') == -1) { //変換前拡張子があり、実際の拡張子はなし
 				continue;
 			}
-			else if (str_PreviousExtension != "" && str_filePath.rfind(".") == std::string::npos) {
+			else if (m_text_previousExtension != L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) != m_text_previousExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 				continue;
 			}
 			else {
-				listbox_str.insert(filePath);
-				AddListStr(filePath, &m_list_displaypath);
+				listBox.insert(filePath);
+				AddListStr(filePath, &m_list_filePath);
 			}
 		}
 	} while (bResult);

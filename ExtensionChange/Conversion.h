@@ -5,13 +5,13 @@ class Conversion
 {
 private:
 
-	const CString m_PreviousExtension;
-	const CString m_AfterExtension;
+	const CString m_previousExtension;
+	const CString m_afterExtension;
 
 public:
 
-	Conversion(CString previous_extension,CString after_extension);
+	Conversion(CString previousExtension,CString afterExtension);
 
-	CString ConvertExtensionString(CString Filepath);
-	void RenameExtension(CString Filepath);
+	CString ConvertExtensionString(CString filePath);
+	void RenameExtension(CString filepath);
 };

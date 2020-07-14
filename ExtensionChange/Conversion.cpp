@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Conversion.h"
 
-Conversion::Conversion(CString previous_extension, CString after_extension)
-	:m_PreviousExtension(previous_extension),m_AfterExtension(after_extension)
+Conversion::Conversion(CString previousExtension, CString afterExtension)
+	:m_previousExtension(previousExtension),m_afterExtension(afterExtension)
 {
 };
 
-CString Conversion::ConvertExtensionString(CString Filepath) {
+CString Conversion::ConvertExtensionString(CString filePath) {
 	// ï∂éöóÒÇÃïœçXÇÃÇ›
 	
 	/*std::string str_PreviousExtension, str_AfterExtension, str_Filepath;
@@ -27,23 +27,23 @@ CString Conversion::ConvertExtensionString(CString Filepath) {
 	CString return_Filepath;
 	return_Filepath = str_Filepath.c_str();*/
 
-	if (m_PreviousExtension == L'' && Filepath.Find(L'.') == -1) {
-		Filepath += (L'.' + m_AfterExtension);
+	if (m_previousExtension == L"" && filePath.Find(L'.') == -1) {
+		filePath += (L'.' + m_afterExtension);
 	}
-	else if (_tcslen(Filepath) - Filepath.ReverseFind('.') - 1 == m_PreviousExtension) {
-		Filepath.Replace(m_PreviousExtension, m_AfterExtension);
+	else if (filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) == m_previousExtension) {
+		filePath.Replace(m_previousExtension, m_afterExtension);
 	}
 
-	return Filepath;
+	return filePath;
 }
 
-void Conversion::RenameExtension(CString Filepath) {
+void Conversion::RenameExtension(CString filePath) {
 
-	std::string str_Filepath = CStringA(Filepath).GetBuffer();
-	const char* previous_filepath = str_Filepath.c_str();
+	std::string oldFilePath = CStringA(filePath).GetBuffer();
+	const char* PreviousFilePath = oldFilePath.c_str();
 
-	std::string str_newFilepath = CStringA(ConvertExtensionString(Filepath)).GetBuffer();
-	const char* after_filepath = str_newFilepath.c_str();
+	std::string newFilePath = CStringA(ConvertExtensionString(filePath)).GetBuffer();
+	const char* AfterFilePath = newFilePath.c_str();
 
-	rename(previous_filepath, after_filepath);
+	rename(PreviousFilePath, AfterFilePath);
 }
