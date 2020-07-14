@@ -248,7 +248,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 		extensionConversion.RenameExtension(filePath);
 	}
 
-	AfxMessageBox(_T("ファイルの変換を行いました "));
+	MessageBox(_T("ファイルの変換を行いました "));
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
