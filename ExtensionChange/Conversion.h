@@ -13,5 +13,5 @@ public:
 	Conversion(CString previousExtension,CString afterExtension);
 
 	CString ConvertExtensionString(CString filePath);
-	void RenameExtension(CString filepath);
+	int RenameExtension(CString filepath);
 };

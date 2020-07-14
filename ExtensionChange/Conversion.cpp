@@ -19,13 +19,10 @@ CString Conversion::ConvertExtensionString(CString filePath) { // ï∂éöóÒÇÃïœçXÇÃ
 	return filePath;
 }
 
-void Conversion::RenameExtension(CString filePath) {
+int Conversion::RenameExtension(CString filePath) {
 
-	std::string oldFilePath = CStringA(filePath).GetBuffer();
-	const char* PreviousFilePath = oldFilePath.c_str();
+	CString newFilePath = ConvertExtensionString(filePath);
+	int res = _wrename(filePath, newFilePath);
 
-	std::string newFilePath = CStringA(ConvertExtensionString(filePath)).GetBuffer();
-	const char* AfterFilePath = newFilePath.c_str();
-
-	rename(PreviousFilePath, AfterFilePath);
+	return res;
 }
