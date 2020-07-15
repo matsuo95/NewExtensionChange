@@ -186,7 +186,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, NULL);
 	int             err = 0, lbErr = 0;
 
 	// ファイル名リスト用メモリ確保
@@ -248,7 +248,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 		extensionConversion.RenameExtension(filePath);
 	}
 
-	MessageBox(_T("ファイルの変換を行いました "));
+	MessageBox(_T("ファイルの変換が完了しました。 "));
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
@@ -270,6 +270,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (bRes) {
 		GetFileList(tchrText,true);
+		m_list_filePath.SetHorizontalExtent(2000);
+		MessageBox(_T("ファイルの参照が完了しました。"));
 	}
 }
 
@@ -379,7 +381,8 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			}
 			else {
 				listBox.insert(filePath);
-				AddListStr(filePath, &m_list_filePath);
+				//AddListStr(filePath, &m_list_filePath);
+				m_list_filePath.AddString(filePath);
 			}
 		}
 	} while (bResult);
