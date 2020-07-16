@@ -8,7 +8,7 @@ Conversion::Conversion(CString previousExtension, CString afterExtension)
 
 CString Conversion::ConvertExtensionString(CString filePath) { // 文字列の変更のみ
 
-	if (m_previousExtension == L"" && filePath.Find(L'.') == -1) { // 変換前の拡張子が指定されておらず、引数として与えられたファイルにも拡張子がない
+	if (m_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') == -1) { // 変換前の拡張子が指定されておらず、引数として与えられたファイルにも拡張子がない
 		filePath += (L'.' + m_afterExtension);
 	}
 	else if (filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) == m_previousExtension) { // 引数として与えられたファイルの拡張子 == 変換前の拡張子
