@@ -187,7 +187,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
-	int             err = 0, lbErr = 0;
+	int             err = 0;
 
 	// ファイル名リスト用メモリ確保
 	if (!err)
@@ -243,9 +243,12 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
+	int Errno = 0;
+
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
-		extensionConversion.RenameExtension(filePath);
+		Errno = extensionConversion.RenameExtension(filePath);
+		if (Errno) MessageBox(_T("ファイルの変換に失敗しました。"));
 	}
 
 	MessageBox(_T("ファイルの変換が完了しました。"));
