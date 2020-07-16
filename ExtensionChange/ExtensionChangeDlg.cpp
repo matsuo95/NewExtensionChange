@@ -369,10 +369,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、実際の拡張子はあり
-				continue;
-			}
-			else if (m_text_previousExtension != L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') == -1) { //変換前拡張子があり、実際の拡張子はなし
+			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいパスの拡張子はあり
 				continue;
 			}
 			else if (m_text_previousExtension != L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) != m_text_previousExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
