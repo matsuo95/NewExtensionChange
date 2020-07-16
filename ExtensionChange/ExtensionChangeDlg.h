@@ -49,7 +49,6 @@ public:
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
 	BOOL GetFileList(CString path,bool flag);
 
-	int AddListStr(CString strText, CListBox* pcListBox);
 	CString m_text_previousExtension;
 	CString m_text_afterExtension;
 };

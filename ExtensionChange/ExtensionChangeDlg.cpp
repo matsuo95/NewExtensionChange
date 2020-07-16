@@ -186,7 +186,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, NULL);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
 	int             err = 0, lbErr = 0;
 
 	// ファイル名リスト用メモリ確保
@@ -216,7 +216,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 
 			if (!err)
 			{
-				AddListStr(filePath, &m_list_filePath);
+				m_list_filePath.AddString(filePath);
 			}
 			if (err) break;
 		}
@@ -270,7 +270,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (bRes) {
 		GetFileList(tchrText,true);
-		m_list_filePath.SetHorizontalExtent(2000);
 		MessageBox(_T("ファイルの参照が完了しました。"));
 	}
 }
@@ -381,7 +380,6 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			}
 			else {
 				listBox.insert(filePath);
-				//AddListStr(filePath, &m_list_filePath);
 				m_list_filePath.AddString(filePath);
 			}
 		}
@@ -406,19 +404,3 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
 }	
-
-int CExtensionChangeDlg::AddListStr(CString strText, CListBox* pcListBox)
-{
-	// 現在のスクロール幅
-	int nNowWidth = pcListBox->GetHorizontalExtent();
-
-	// 追加する文字列幅の取得
-	CDC* pListDC = pcListBox->GetDC();
-	CSize cTextSize = pListDC->GetTextExtent(strText);
-	pListDC->LPtoDP(&cTextSize);
-	if (nNowWidth < cTextSize.cx)
-		pcListBox->SetHorizontalExtent(cTextSize.cx);
-
-	// 文字列の追加
-	return pcListBox->AddString(strText);
-}
