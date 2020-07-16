@@ -243,15 +243,22 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
-	int Errno = 0;
+	int Errno = 0, errCount = 0;
 
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
 		Errno = extensionConversion.RenameExtension(filePath);
-		if (Errno) MessageBox(_T("ファイルの変換に失敗しました。"));
+		if (Errno) errCount++;
 	}
 
-	MessageBox(_T("ファイルの変換が完了しました。"));
+	if (errCount == 0) {
+		MessageBox(_T("全てのファイルの変換が完了しました"));
+	}
+	else {
+		CString Message;
+		Message.Format(_T("ファイルの変換が完了しました\n%d個のファイルの変換に失敗しました"), errCount);
+		MessageBox(Message);
+	}
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
