@@ -248,7 +248,7 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 		extensionConversion.RenameExtension(filePath);
 	}
 
-	MessageBox(_T("ファイルの変換が完了しました。 "));
+	MessageBox(_T("ファイルの変換が完了しました。"));
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
@@ -369,7 +369,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (m_text_previousExtension == L"" && filePath.Find(L'.') != -1) { //変換前拡張子がなし、実際の拡張子はあり
+			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、実際の拡張子はあり
 				continue;
 			}
 			else if (m_text_previousExtension != L"" && filePath.Find(L'.') == -1) { //変換前拡張子があり、実際の拡張子はなし
@@ -384,7 +384,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			}
 		}
 	} while (bResult);
-
+	
 	return TRUE;
 }
 

@@ -11,7 +11,7 @@ class CExtensionChangeDlg : public CDialogEx
 {
 // コンストラクション
 public:
-	CExtensionChangeDlg(CWnd* pParent = nullptr);	// 標準コンストラクター
+	CExtensionChangeDlg(CWnd* pParent = nullptr); // 標準コンストラクター
 
 // ダイアログ データ
 #ifdef AFX_DESIGN_TIME
@@ -19,7 +19,7 @@ public:
 #endif
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
+	virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV サポート
 
 // 実装
 protected:
