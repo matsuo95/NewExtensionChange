@@ -193,6 +193,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 			GetFileList(filePath, true);
 		}
 	}
+	MessageBox(_T("ファイルの選択が完了しました。"));
 	return;
 }
 
@@ -380,4 +381,5 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
+	MessageBox(_T("ファイルの選択が完了しました。"));
 }	
