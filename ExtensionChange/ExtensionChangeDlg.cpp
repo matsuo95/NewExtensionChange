@@ -188,12 +188,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	CString			filter(L"All Files(*.*)|*.*||");
 	CString			filePath(L"");
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
-	POSITION        pos = selDlg.GetStartPosition();
+	POSITION        filepathPosition = selDlg.GetStartPosition();
 
-	if (selDlg.DoModal() == IDOK && pos != NULL) {
-		while (pos)
+	if (selDlg.DoModal() == IDOK && filepathPosition != NULL) {
+		while (filepathPosition)
 		{
-			filePath = selDlg.GetNextPathName(pos);
+			filePath = selDlg.GetNextPathName(filepathPosition);
 			GetFileList(filePath, true);
 		}
 	}
@@ -376,11 +376,11 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
 
-		CString csfile;
-		DragQueryFile(hDropInfo, i, csfile.GetBuffer(length + 1), length + 1);
-		csfile.ReleaseBuffer();
+		CString filePath;
+		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
+		filePath.ReleaseBuffer();
 
-		GetFileList(csfile, true);
+		GetFileList(filePath, true);
 
 		CDialogEx::OnDropFiles(hDropInfo);
 	}
