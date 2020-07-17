@@ -185,37 +185,31 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
-	CString			txt1(" Files (*."), txt2(")|*."), txt3(";||");
-	CString			filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
-	CString			filter2("198 Files(*.198)|*.198|All Files(*.*)|*.*||");
+	CString			filter("All Files(*.*)|*.*||");
 	CString			filePath, strBuf;
 	POSITION        pos = NULL;
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter2);
-	int             err = 0;
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
 
 	// ファイル名リスト用メモリ確保
-	if (!err)
-	{
-		try
-		{
-			selDlg.GetOFN().lpstrFile = strBuf.GetBuffer(MAX_PATH * 100);
-			selDlg.GetOFN().nMaxFile = MAX_PATH * 100;
-		}
-		catch (...) { err = 1; }
-	}
-	if (!err) if (selDlg.DoModal() != IDOK) err = 1;
-	if (!err) if ((pos = selDlg.GetStartPosition()) == NULL) err = 1;
-	if (!err)
-	{
-		while (pos)
-		{
-			filePath = selDlg.GetNextPathName(pos);
-			GetFileList(filePath, true);
-		}
-		UpdateData(TRUE);
-	}
-	strBuf.ReleaseBuffer();
 
+	if (selDlg.DoModal() != IDOK) {
+		strBuf.ReleaseBuffer();
+		return;
+	}
+
+	if ((pos = selDlg.GetStartPosition()) == NULL) {
+		strBuf.ReleaseBuffer();
+		return;
+	}
+	
+	while (pos)
+	{
+		filePath = selDlg.GetNextPathName(pos);
+		GetFileList(filePath, true);
+	}
+	UpdateData(TRUE);
+
+	strBuf.ReleaseBuffer();
 	return;
 }
 
