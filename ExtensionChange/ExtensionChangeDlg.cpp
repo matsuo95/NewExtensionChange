@@ -10,10 +10,6 @@
 
 #include "Conversion.h"
 #include <atlpath.h>
-#include <stdio.h>
-#include <windows.h>
-
-
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -241,7 +237,7 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
-	char dir[MAX_PATH] = { '\0' };
+	char dir[MAX_PATH] = {'\0'};
 
 	const int tchrSize = sizeof(dir) + 1;
 	TCHAR tchrText[tchrSize] = { _T('¥0') };
