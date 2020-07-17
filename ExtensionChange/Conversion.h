@@ -8,10 +8,11 @@ private:
 	const CString m_previousExtension;
 	const CString m_afterExtension;
 
+	CString ConvertExtensionString(CString filePath);
+
 public:
 
 	Conversion(CString previousExtension,CString afterExtension);
 
-	CString ConvertExtensionString(CString filePath);
 	int RenameExtension(CString filepath);
 };

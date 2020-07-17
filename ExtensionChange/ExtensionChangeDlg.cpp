@@ -190,16 +190,13 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
 	POSITION        pos = selDlg.GetStartPosition();
 
-	if (selDlg.DoModal() != IDOK || pos == NULL) {
-		return;
+	if (selDlg.DoModal() == IDOK && pos != NULL) {
+		while (pos)
+		{
+			filePath = selDlg.GetNextPathName(pos);
+			GetFileList(filePath, true);
+		}
 	}
-	
-	while (pos)
-	{
-		filePath = selDlg.GetNextPathName(pos);
-		GetFileList(filePath, true);
-	}
-
 	return;
 }
 
@@ -254,9 +251,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (bRes) {
 		GetFileList(tchrText,true);
-		MessageBox(_T("ファイルの参照が完了しました。"));
+		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
-
 }
 
 void CExtensionChangeDlg::OnBnClickedClearButton()
