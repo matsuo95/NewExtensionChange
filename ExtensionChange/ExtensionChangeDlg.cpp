@@ -185,10 +185,10 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
-	CString txt1(" Files (*."), txt2(")|*."), txt3(";||");
-	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
-	CString filter2("198 Files(*.198)|*.198|All Files(*.*)|*.*||");
-	CString         filePath, strBuf;
+	CString			txt1(" Files (*."), txt2(")|*."), txt3(";||");
+	CString			filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
+	CString			filter2("198 Files(*.198)|*.198|All Files(*.*)|*.*||");
+	CString			filePath, strBuf;
 	POSITION        pos = NULL;
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter2);
 	int             err = 0;
@@ -210,19 +210,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		while (pos)
 		{
 			filePath = selDlg.GetNextPathName(pos);
-
-			if (listBox.count(filePath) == 1) {
-				err = 1;
-			}
-			else {
-				listBox.insert(filePath);
-			}
-
-			if (!err)
-			{
-				m_list_filePath.AddString(filePath);
-			}
-			if (err) break;
+			GetFileList(filePath, true);
 		}
 		UpdateData(TRUE);
 	}
@@ -249,11 +237,19 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	int Errno = 0, errCount = 0;
 
+	LARGE_INTEGER freq;
+	QueryPerformanceFrequency(&freq);
+	LARGE_INTEGER start, end;
+	QueryPerformanceCounter(&start);
+
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
 		Errno = extensionConversion.RenameExtension(filePath);
 		if (Errno) errCount++;
 	}
+
+	QueryPerformanceCounter(&end);
+	double time = static_cast<double>(end.QuadPart - start.QuadPart) / freq.QuadPart;
 
 	if (errCount == 0) {
 		MessageBox(_T("全てのファイルの変換が完了しました"));
