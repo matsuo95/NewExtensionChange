@@ -185,20 +185,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
-	CString			filter("All Files(*.*)|*.*||");
-	CString			filePath, strBuf;
-	POSITION        pos = NULL;
+	CString			filter(L"All Files(*.*)|*.*||");
+	CString			filePath(L"");
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
+	POSITION        pos = selDlg.GetStartPosition();
 
-	// ファイル名リスト用メモリ確保
-
-	if (selDlg.DoModal() != IDOK) {
-		strBuf.ReleaseBuffer();
-		return;
-	}
-
-	if ((pos = selDlg.GetStartPosition()) == NULL) {
-		strBuf.ReleaseBuffer();
+	if (selDlg.DoModal() != IDOK || pos == NULL) {
 		return;
 	}
 	
@@ -207,9 +199,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		filePath = selDlg.GetNextPathName(pos);
 		GetFileList(filePath, true);
 	}
-	UpdateData(TRUE);
 
-	strBuf.ReleaseBuffer();
 	return;
 }
 
@@ -259,8 +249,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	const int tchrSize = sizeof(dir) + 1;
 	TCHAR tchrText[tchrSize] = { _T('¥0') };
 	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText, tchrSize);
-
-	UpdateData(TRUE);
 
 	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
