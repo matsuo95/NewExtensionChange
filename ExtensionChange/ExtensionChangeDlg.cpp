@@ -10,6 +10,9 @@
 
 #include "Conversion.h"
 #include <atlpath.h>
+#include <stdio.h>
+#include <windows.h>
+
 
 
 #ifdef _DEBUG
@@ -76,8 +79,8 @@ BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON4, &CExtensionChangeDlg::OnBnClickedReferenceListButton)
-	ON_BN_CLICKED(IDC_BUTTON3, &CExtensionChangeDlg::OnBnClickedConversionListButton)
+	ON_BN_CLICKED(IDC_BUTTON4, &CExtensionChangeDlg::OnBnClickedReferenceFileButton)
+	ON_BN_CLICKED(IDC_BUTTON3, &CExtensionChangeDlg::OnBnClickedConversionFileButton)
 	ON_BN_CLICKED(IDC_BUTTON5, &CExtensionChangeDlg::OnBnClickedReferenceFolderButton)
 	ON_WM_DROPFILES()
 	ON_WM_DROPFILES()
@@ -178,15 +181,16 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CExtensionChangeDlg::OnBnClickedReferenceListButton()
+void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
 	CString txt1(" Files (*."), txt2(")|*."), txt3(";||");
 	CString filter(m_text_previousExtension + txt1 + m_text_previousExtension + txt2 + m_text_previousExtension + txt3);
+	CString filter2("198 Files(*.198)|*.198|All Files(*.*)|*.*||");
 	CString         filePath, strBuf;
 	POSITION        pos = NULL;
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter2);
 	int             err = 0;
 
 	// ファイル名リスト用メモリ確保
@@ -227,7 +231,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceListButton()
 	return;
 }
 
-void CExtensionChangeDlg::OnBnClickedConversionListButton()
+void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
 
@@ -245,19 +249,27 @@ void CExtensionChangeDlg::OnBnClickedConversionListButton()
 
 	int Errno = 0, errCount = 0;
 
+	LARGE_INTEGER freq;
+	QueryPerformanceFrequency(&freq);
+	LARGE_INTEGER start, end;
+	QueryPerformanceCounter(&start);
+
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
 		Errno = extensionConversion.RenameExtension(filePath);
 		if (Errno) errCount++;
 	}
 
+	QueryPerformanceCounter(&end);
+	double time = static_cast<double>(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
 	if (errCount == 0) {
 		MessageBox(_T("全てのファイルの変換が完了しました"));
 	}
 	else {
 		CString Message;
-		Message.Format(_T("ファイルの変換が完了しました\n%d個のファイルの変換に失敗しました"), errCount);
-		MessageBox(Message);
+		Message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
+		AfxMessageBox(Message);
 	}
 
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
@@ -379,7 +391,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいパスの拡張子はあり
+			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
 				continue;
 			}
 			else if (m_text_previousExtension != L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) != m_text_previousExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
