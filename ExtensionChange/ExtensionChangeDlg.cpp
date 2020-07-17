@@ -249,19 +249,11 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	int Errno = 0, errCount = 0;
 
-	LARGE_INTEGER freq;
-	QueryPerformanceFrequency(&freq);
-	LARGE_INTEGER start, end;
-	QueryPerformanceCounter(&start);
-
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
 		Errno = extensionConversion.RenameExtension(filePath);
 		if (Errno) errCount++;
 	}
-
-	QueryPerformanceCounter(&end);
-	double time = static_cast<double>(end.QuadPart - start.QuadPart) / freq.QuadPart;
 
 	if (errCount == 0) {
 		MessageBox(_T("全てのファイルの変換が完了しました"));
@@ -294,6 +286,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 		GetFileList(tchrText,true);
 		MessageBox(_T("ファイルの参照が完了しました。"));
 	}
+
 }
 
 void CExtensionChangeDlg::OnBnClickedClearButton()
@@ -385,16 +378,19 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		// ファイルの場合
 		else
 		{
+			CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
+			CString fileExtension = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1);
+
 			if (fileFind.IsDirectory()) { //ディレクトリ
 				continue;
 			}
 			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 				continue;
 			}
-			else if (m_text_previousExtension == L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1).ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
+			else if (m_text_previousExtension == L"" && fileName.ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
 				continue;
 			}
-			else if (m_text_previousExtension != L"" && filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1) != m_text_previousExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
+			else if (m_text_previousExtension != L"" && fileExtension != m_text_previousExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 				continue;
 			}
 			else {
