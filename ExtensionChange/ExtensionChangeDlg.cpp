@@ -192,8 +192,9 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 			filePath = selDlg.GetNextPathName(filepathPosition);
 			GetFileList(filePath, true);
 		}
+		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
-	MessageBox(_T("ファイルの選択が完了しました。"));
+	
 	return;
 }
 

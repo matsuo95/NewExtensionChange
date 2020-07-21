@@ -1,4 +1,6 @@
-﻿  Conversion.cpp
+﻿  ExtensionChangeDlg.cpp
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(245): warning C4066: ワイド文字定数の文字列は無視されます。
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(374): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   コード生成しています。
   1 of 328 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
