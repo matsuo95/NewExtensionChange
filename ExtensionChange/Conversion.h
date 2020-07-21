@@ -7,7 +7,7 @@ private:
 	const CString m_previousExtension;
 	const CString m_afterExtension;
 
-	CString ConvertExtensionString(CString filePath);
+	CString ConvertExtensionString(CString filePath,CString fileExtension);
 
 public:
 
