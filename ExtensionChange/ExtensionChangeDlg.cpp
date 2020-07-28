@@ -198,6 +198,22 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	return;
 }
 
+void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
+{
+	char dir[MAX_PATH] = { '\0' };
+
+	const int tchrSize = sizeof(dir) + 1;
+	TCHAR tchrText[tchrSize] = { _T('¥0') };
+	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText, tchrSize);
+
+	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+
+	if (bRes) {
+		GetFileList(tchrText, true);
+		MessageBox(_T("ファイルの選択が完了しました。"));
+	}
+}
+
 void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
@@ -235,22 +251,6 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	plist->ResetContent();
 
 	listBox.clear();
-}
-
-void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
-{
-	char dir[MAX_PATH] = {'\0'};
-
-	const int tchrSize = sizeof(dir) + 1;
-	TCHAR tchrText[tchrSize] = { _T('¥0') };
-	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText, tchrSize);
-
-	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
-
-	if (bRes) {
-		GetFileList(tchrText,true);
-		MessageBox(_T("ファイルの選択が完了しました。"));
-	}
 }
 
 void CExtensionChangeDlg::OnBnClickedClearButton()
