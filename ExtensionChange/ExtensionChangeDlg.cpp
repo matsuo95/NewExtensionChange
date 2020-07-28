@@ -214,6 +214,19 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	}
 }
 
+int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+{
+	switch (uMsg)
+	{
+	case BFFM_INITIALIZED:
+		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
+		break;
+	case BFFM_SELCHANGED:
+		break;
+	}
+	return 0;
+}
+
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -243,19 +256,6 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 		pMalloc->Release();
 	}
 	return bRet;
-}
-
-int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
-{
-	switch (uMsg)
-	{
-	case BFFM_INITIALIZED:
-		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
-		break;
-	case BFFM_SELCHANGED:
-		break;
-	}
-	return 0;
 }
 
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
