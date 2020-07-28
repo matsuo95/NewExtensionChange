@@ -214,67 +214,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	}
 }
 
-void CExtensionChangeDlg::OnBnClickedConversionFileButton()
-{
-	int listboxCount = m_list_filePath.GetCount();
-
-	if (listboxCount == 0) {
-		AfxMessageBox(_T("変換するファイルがありません"));
-		return;
-	}
-
-	CString filePath;
-
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
-	m_edit_afterExtension.GetWindowTextW(m_text_afterExtension);
-
-	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
-
-	int Errno = 0, errCount = 0;
-
-	for (int i = 0; i < listboxCount; i++) {
-		m_list_filePath.GetText(i, filePath);
-		Errno = extensionConversion.RenameExtension(filePath);
-		if (Errno) errCount++;
-	}
-
-	if (errCount == 0) {
-		MessageBox(_T("全てのファイルの変換が完了しました"));
-	}
-	else {
-		CString Message;
-		Message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
-		AfxMessageBox(Message);
-	}
-
-	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
-	plist->ResetContent();
-
-	listBox.clear();
-}
-
-void CExtensionChangeDlg::OnBnClickedClearButton()
-{
-	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-
-	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
-	plist->ResetContent();
-	listBox.clear();
-}
-
-int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
-{
-	switch (uMsg)
-	{
-	case BFFM_INITIALIZED:
-		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
-		break;
-	case BFFM_SELCHANGED:
-		break;
-	}
-	return 0;
-}
-
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -304,6 +243,37 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 		pMalloc->Release();
 	}
 	return bRet;
+}
+
+int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
+{
+	switch (uMsg)
+	{
+	case BFFM_INITIALIZED:
+		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
+		break;
+	case BFFM_SELCHANGED:
+		break;
+	}
+	return 0;
+}
+
+void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
+{
+	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+
+	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
+		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
+
+		CString filePath;
+		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
+		filePath.ReleaseBuffer();
+
+		GetFileList(filePath, true);
+
+		CDialogEx::OnDropFiles(hDropInfo);
+	}
+	MessageBox(_T("ファイルの選択が完了しました。"));
 }
 
 BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
@@ -367,20 +337,50 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	return TRUE;
 }
 
-void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
+void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
-	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
+	int listboxCount = m_list_filePath.GetCount();
 
-	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
-		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
-
-		CString filePath;
-		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
-		filePath.ReleaseBuffer();
-
-		GetFileList(filePath, true);
-
-		CDialogEx::OnDropFiles(hDropInfo);
+	if (listboxCount == 0) {
+		AfxMessageBox(_T("変換するファイルがありません"));
+		return;
 	}
-	MessageBox(_T("ファイルの選択が完了しました。"));
-}	
+
+	CString filePath;
+
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	m_edit_afterExtension.GetWindowTextW(m_text_afterExtension);
+
+	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
+
+	int Errno = 0, errCount = 0;
+
+	for (int i = 0; i < listboxCount; i++) {
+		m_list_filePath.GetText(i, filePath);
+		Errno = extensionConversion.RenameExtension(filePath);
+		if (Errno) errCount++;
+	}
+
+	if (errCount == 0) {
+		MessageBox(_T("全てのファイルの変換が完了しました"));
+	}
+	else {
+		CString Message;
+		Message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
+		AfxMessageBox(Message);
+	}
+
+	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
+	plist->ResetContent();
+
+	listBox.clear();
+}
+
+void CExtensionChangeDlg::OnBnClickedClearButton()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+
+	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
+	plist->ResetContent();
+	listBox.clear();
+}
