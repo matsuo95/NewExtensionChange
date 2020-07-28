@@ -6,7 +6,7 @@ Conversion::Conversion(CString previousExtension, CString afterExtension)
 {
 };
 
-CString Conversion::ConvertExtensionString(CString filePath,CString fileExtension) { // ï∂éöóÒÇÃïœçXÇÃÇ›
+CString Conversion::ConvertExtensionString(CString filePath) { // ï∂éöóÒÇÃïœçXÇÃÇ›
 
 	if (m_previousExtension == L"") {
 		filePath += (L'.');
@@ -32,7 +32,7 @@ int Conversion::RenameExtension(CString filePath) {
 	int res = 0;
 
 	if (fileExtension == m_previousExtension) {
-		CString newFilePath = ConvertExtensionString(filePath,fileExtension);
+		CString newFilePath = ConvertExtensionString(filePath);
 		res = _wrename(filePath, newFilePath);
 	}
 
