@@ -368,13 +368,15 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 		AfxMessageBox(Message);
 	}
 
-	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
-	plist->ResetContent();
-
-	listBox.clear();
+	deleteListbox();
 }
 
-void CExtensionChangeDlg::OnBnClickedClearButton()
+//void CExtensionChangeDlg::OnBnClickedClearButton()
+//{
+//	deleteListbox();
+//}
+
+void CExtensionChangeDlg::deleteListbox() 
 {
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();

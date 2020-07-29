@@ -45,10 +45,12 @@ public:
 	afx_msg void OnBnClickedReferenceFileButton();
 	afx_msg void OnBnClickedReferenceFolderButton();
 	afx_msg void OnBnClickedConversionFileButton();
-	afx_msg void OnBnClickedClearButton();
+	afx_msg void OnBnClickedClearButton() { deleteListbox(); }
 
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
 	BOOL GetFileList(CString path,bool flag);
+
+	void deleteListbox();
 };
