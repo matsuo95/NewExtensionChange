@@ -260,8 +260,6 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
-	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-
 	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
 
@@ -378,8 +376,6 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
-	// TODO: ここにコントロール通知ハンドラー コードを追加します。
-
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
 	listBox.clear();

@@ -1,9 +1,11 @@
-﻿  ExtensionChangeDlg.cpp
-c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(245): warning C4066: ワイド文字定数の文字列は無視されます。
-c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(374): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
+﻿  Conversion.cpp
+  ExtensionChange.cpp
+  ExtensionChangeDlg.cpp
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(206): warning C4066: ワイド文字定数の文字列は無視されます。
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(265): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   コード生成しています。
-  1 of 328 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  4 of 328 functions ( 1.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   ExtensionChange.vcxproj -> C:\Work\4.ExtensionChange\ExtensionChange\Release\ExtensionChange.exe
