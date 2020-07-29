@@ -371,10 +371,10 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	deleteListbox();
 }
 
-//void CExtensionChangeDlg::OnBnClickedClearButton()
-//{
-//	deleteListbox();
-//}
+void CExtensionChangeDlg::OnBnClickedClearButton()
+{
+	deleteListbox();
+}
 
 void CExtensionChangeDlg::deleteListbox() 
 {

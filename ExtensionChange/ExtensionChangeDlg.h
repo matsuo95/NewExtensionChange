@@ -45,7 +45,7 @@ public:
 	afx_msg void OnBnClickedReferenceFileButton();
 	afx_msg void OnBnClickedReferenceFolderButton();
 	afx_msg void OnBnClickedConversionFileButton();
-	afx_msg void OnBnClickedClearButton() { deleteListbox(); }
+	afx_msg void OnBnClickedClearButton();
 
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
