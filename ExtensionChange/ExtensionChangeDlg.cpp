@@ -311,7 +311,7 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		else
 		{
 			CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
-			CString fileExtension = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'.') - 1);
+			CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(L'.') - 1);
 
 			if (fileFind.IsDirectory()) { //ディレクトリ
 				continue;

@@ -4,7 +4,7 @@
 Conversion::Conversion(CString previousExtension, CString afterExtension)
 	:m_previousExtension(previousExtension),m_afterExtension(afterExtension)
 {
-};
+}
 
 CString Conversion::ConvertExtensionString(CString filePath) {//ファイルパスの拡張子部分の文字列変更
 
@@ -23,6 +23,7 @@ CString Conversion::ConvertExtensionString(CString filePath) {//ファイルパスの拡
 int Conversion::RenameExtension(CString filePath) {//_wrename関数でファイルパスを変更
 
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
+
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(L'.') - 1);
 
 	if (fileExtension == fileName) {

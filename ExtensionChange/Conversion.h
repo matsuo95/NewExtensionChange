@@ -2,6 +2,13 @@
 
 class Conversion
 {
+
+public:
+
+	Conversion(CString previousExtension, CString afterExtension);
+
+	int RenameExtension(CString filepath);
+
 private:
 
 	const CString m_previousExtension;
@@ -9,9 +16,4 @@ private:
 
 	CString ConvertExtensionString(CString filePath);
 
-public:
-
-	Conversion(CString previousExtension,CString afterExtension);
-
-	int RenameExtension(CString filepath);
 };
