@@ -181,9 +181,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
-	CString			filter(L"All Files(*.*)|*.*||");
 	CString			filePath(L"");
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT, filter);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
 	POSITION        filepathPosition = selDlg.GetStartPosition();
 
 	if (selDlg.DoModal() == IDOK && filepathPosition != NULL) {

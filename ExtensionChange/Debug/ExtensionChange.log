@@ -1,6 +1,4 @@
-﻿  Conversion.cpp
-  ExtensionChangeDlg.cpp
-c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(206): warning C4066: ワイド文字定数の文字列は無視されます。
-c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(263): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-  コードを生成中...
+﻿  ExtensionChangeDlg.cpp
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(205): warning C4066: ワイド文字定数の文字列は無視されます。
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(262): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   ExtensionChange.vcxproj -> C:\Work\4.ExtensionChange\ExtensionChange\Debug\ExtensionChange.exe
