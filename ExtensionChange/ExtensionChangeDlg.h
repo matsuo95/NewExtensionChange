@@ -50,7 +50,7 @@ public:
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
-	BOOL GetFileList(CString path,bool flag);
+	BOOL GetFileList(CString path);
 
 	void deleteListbox();
 

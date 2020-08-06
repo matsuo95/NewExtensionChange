@@ -209,7 +209,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (bRes) {
-		GetFileList(tchrText, true);
+		GetFileList(tchrText);
 		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
 }
@@ -268,18 +268,20 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
 		//filePath.ReleaseBuffer();
 
-		GetFileList(filePath, true);
+		GetFileList(filePath);
 
 		//CDialogEx::OnDropFiles(hDropInfo);
 	}
 	MessageBox(_T("ファイルの選択が完了しました。"));
 }
 
-BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
+BOOL CExtensionChangeDlg::GetFileList(CString path)
 {
+	CPath dirPath = path;
+	dirPath.Append(_T("*"));
 	// ファイル検索を開始します。
 	CFileFind fileFind;
-	BOOL bResult = fileFind.FindFile(path);
+	BOOL bResult = fileFind.FindFile(dirPath);
 
 	// ファイル検索ができない場合、終了します。
 	if (!bResult) return FALSE;
@@ -298,14 +300,8 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 		CString filePath = fileFind.GetFilePath();
 		if (fileFind.IsDirectory())
 		{
-			if ((((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) || flag) {
-				flag = false;
-				// サブディレクトリを検索する場合、再帰呼出しします。
-				CPath subDir = filePath;
-				// ディレクトリ内のすべてのファイル・ディレクトリを対象とするため
-				// ワイルドカード"*"を指定します。
-				subDir.Append(_T("*"));
-				GetFileList(subDir, flag);
+			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
+				GetFileList(filePath);
 			}
 		}
 		// ファイルの場合
