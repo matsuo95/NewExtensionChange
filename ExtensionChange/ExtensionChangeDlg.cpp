@@ -202,11 +202,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
-	char dir[MAX_PATH] = { '\0' };
-
-	const int tchrSize = sizeof(dir) + 1;
-	TCHAR tchrText[tchrSize] = { _T('¥0') };
-	int res = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, dir, sizeof(dir), tchrText, tchrSize);
+	TCHAR tchrText[MAX_PATH + 1] = { _T('¥0') };
 
 	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
@@ -263,16 +259,16 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	CString filePath;
 	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
 
-		CString filePath;
 		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
-		//filePath.ReleaseBuffer();
+		filePath.ReleaseBuffer();
 
 		GetFileList(filePath);
 
-		//CDialogEx::OnDropFiles(hDropInfo);
+		CDialogEx::OnDropFiles(hDropInfo);
 	}
 	MessageBox(_T("ファイルの選択が完了しました。"));
 }
