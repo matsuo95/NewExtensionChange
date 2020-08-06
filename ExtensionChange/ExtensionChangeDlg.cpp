@@ -181,17 +181,19 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
-	CString			filePath(L"");
+	CString			filePath = _T("");
 	CFileDialog     selDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
-	POSITION        filepathPosition = selDlg.GetStartPosition();
 
-	if (selDlg.DoModal() == IDOK && filepathPosition != NULL) {
-		while (filepathPosition)
-		{
-			filePath = selDlg.GetNextPathName(filepathPosition);
-			GetFileList(filePath);
+	if (selDlg.DoModal() == IDOK) {
+		POSITION filepathPosition = selDlg.GetStartPosition();
+		if (filepathPosition != NULL) {
+			while (filepathPosition)
+			{
+				filePath = selDlg.GetNextPathName(filepathPosition);
+				GetFileList(filePath);
+			}
+			MessageBox(_T("ファイルの選択が完了しました。"));
 		}
-		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
 
 	return;
