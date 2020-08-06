@@ -189,7 +189,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		while (filepathPosition)
 		{
 			filePath = selDlg.GetNextPathName(filepathPosition);
-			outputFilePath(filePath);
+			GetFileList(filePath);
 		}
 		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
@@ -278,16 +278,18 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 BOOL CExtensionChangeDlg::GetFileList(CString path)
 {
 	CPath dirPath = path;
-	dirPath.Append(_T("*"));
+	if (dirPath.IsDirectory()) {
+		dirPath.Append(_T("*"));
+	}
+
 	// ファイル検索を開始します。
 	CFileFind fileFind;
 	BOOL bResult = fileFind.FindFile(dirPath);
 
 	// ファイル検索ができない場合、終了します。
 	if (!bResult) return FALSE;
-
-	// ファイルが検索できる間繰り返します。
-	do
+	
+	while(bResult) // ファイルが検索できる間繰り返します。
 	{
 		// ファイルを検索します。
 		// 次のファイル・ディレクトリがない場合、FALSEが返却されます。
@@ -296,20 +298,19 @@ BOOL CExtensionChangeDlg::GetFileList(CString path)
 		// "."または".."の場合、次を検索します。
 		if (fileFind.IsDots()) continue;
 
-		// 検索した結果がディレクトリの場合
 		CString filePath = fileFind.GetFilePath();
-		if (fileFind.IsDirectory())
+
+		if (fileFind.IsDirectory()) // 検索した結果がディレクトリの場合
 		{
 			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
 				GetFileList(filePath);
 			}
 		}
-		// ファイルの場合
-		else
+		else // ファイルの場合
 		{
 			outputFilePath(filePath);
 		}
-	} while (bResult);
+	} 
 	
 	return TRUE;
 }
