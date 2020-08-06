@@ -182,7 +182,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 
 	CString			filePath(L"");
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
+	CFileDialog     selDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
 	POSITION        filepathPosition = selDlg.GetStartPosition();
 
 	if (selDlg.DoModal() == IDOK && filepathPosition != NULL) {
@@ -193,7 +193,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		}
 		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
-	
+
 	return;
 }
 
@@ -264,11 +264,11 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 		CString filePath;
 		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
-		filePath.ReleaseBuffer();
+		//filePath.ReleaseBuffer();
 
 		GetFileList(filePath, true);
 
-		CDialogEx::OnDropFiles(hDropInfo);
+		//CDialogEx::OnDropFiles(hDropInfo);
 	}
 	MessageBox(_T("ファイルの選択が完了しました。"));
 }
