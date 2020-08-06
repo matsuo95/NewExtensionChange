@@ -199,6 +199,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 	char dir[MAX_PATH] = { '\0' };
 
 	const int tchrSize = sizeof(dir) + 1;
@@ -259,6 +260,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
+	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
 	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
 
@@ -282,8 +284,6 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 	// ファイル検索ができない場合、終了します。
 	if (!bResult) return FALSE;
 
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
-
 	// ファイルが検索できる間繰り返します。
 	do
 	{
@@ -296,38 +296,22 @@ BOOL CExtensionChangeDlg::GetFileList(CString path, bool flag)
 
 		// 検索した結果がディレクトリの場合
 		CString filePath = fileFind.GetFilePath();
-		if (fileFind.IsDirectory() && ((((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) || flag))
+		if (fileFind.IsDirectory())
 		{
-			flag = false;
-			// サブディレクトリを検索する場合、再帰呼出しします。
-			CPath subDir = filePath;
-			// ディレクトリ内のすべてのファイル・ディレクトリを対象とするため
-			// ワイルドカード"*"を指定します。
-			subDir.Append(_T("*"));
-			GetFileList(subDir,flag);
+			if ((((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) || flag) {
+				flag = false;
+				// サブディレクトリを検索する場合、再帰呼出しします。
+				CPath subDir = filePath;
+				// ディレクトリ内のすべてのファイル・ディレクトリを対象とするため
+				// ワイルドカード"*"を指定します。
+				subDir.Append(_T("*"));
+				GetFileList(subDir, flag);
+			}
 		}
 		// ファイルの場合
 		else
 		{
-			CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
-			CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(L'.') - 1);
-
-			if (fileFind.IsDirectory()) { //ディレクトリ
-				continue;
-			}
-			else if (listBox.count(filePath) == 1) { //既にリストボックスに存在
-				continue;
-			}
-			else if (m_text_previousExtension == L"" && fileName.ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
-				continue;
-			}
-			else if (m_text_previousExtension != L"" &&  m_text_previousExtension != fileExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
-				continue;
-			}
-			else {
-				listBox.insert(filePath);
-				m_list_filePath.AddString(filePath);
-			}
+			outputFilePath(filePath);
 		}
 	} while (bResult);
 	
@@ -380,4 +364,24 @@ void CExtensionChangeDlg::deleteListbox()
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
 	listBox.clear();
+}
+
+void CExtensionChangeDlg::outputFilePath(CString filePath)
+{
+	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
+	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(L'.') - 1);
+
+	if (listBox.count(filePath) == 1) { //既にリストボックスに存在
+		return;
+	}
+	else if (m_text_previousExtension == L"" && fileName.ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
+		return;
+	}
+	else if (m_text_previousExtension != L"" &&  m_text_previousExtension != fileExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
+		return;
+	}
+	else {
+		listBox.insert(filePath);
+		m_list_filePath.AddString(filePath);
+	}
 }

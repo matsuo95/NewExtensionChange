@@ -53,4 +53,6 @@ public:
 	BOOL GetFileList(CString path,bool flag);
 
 	void deleteListbox();
+
+	void outputFilePath(CString filePath);
 };
