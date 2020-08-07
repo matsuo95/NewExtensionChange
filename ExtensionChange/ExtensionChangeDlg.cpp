@@ -179,7 +179,7 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 
 void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	UpdateData();
 
 	CString			filePath = _T("");
 	CFileDialog     selDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
@@ -201,7 +201,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	UpdateData();
 	TCHAR tchrText[MAX_PATH + 1] = { _T('¥0') };
 
 	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
@@ -258,7 +258,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
+	UpdateData();
 	CString filePath;
 	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
@@ -324,8 +324,7 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	CString filePath;
 
-	m_edit_previousExtension.GetWindowTextW(m_text_previousExtension);
-	m_edit_afterExtension.GetWindowTextW(m_text_afterExtension);
+	UpdateData();
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
