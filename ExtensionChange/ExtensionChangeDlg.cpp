@@ -192,7 +192,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 				filePath = selDlg.GetNextPathName(filepathPosition);
 				GetFileList(filePath);
 			}
-			MessageBox(_T("ファイルの選択が完了しました。"));
 		}
 	}
 
@@ -208,7 +207,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (bRes) {
 		GetFileList(tchrText);
-		MessageBox(_T("ファイルの選択が完了しました。"));
 	}
 }
 
@@ -267,10 +265,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		filePath.ReleaseBuffer();
 
 		GetFileList(filePath);
-
-		CDialogEx::OnDropFiles(hDropInfo);
 	}
-	MessageBox(_T("ファイルの選択が完了しました。"));
 }
 
 BOOL CExtensionChangeDlg::GetFileList(CString path)
