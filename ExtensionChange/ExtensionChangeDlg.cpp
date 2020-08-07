@@ -270,18 +270,18 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 BOOL CExtensionChangeDlg::GetFileList(CString path)
 {
-	CPath dirPath = path;
-	if (dirPath.IsDirectory()) {
-		dirPath.Append(_T("*"));
+	CPath Path = path;
+	if (Path.IsDirectory()) {
+		Path.Append(_T("*"));
 	}
 
 	// ファイル検索を開始します。
 	CFileFind fileFind;
-	BOOL bResult = fileFind.FindFile(dirPath);
+	BOOL bResult = fileFind.FindFile(Path);
 
 	// ファイル検索ができない場合、終了します。
 	if (!bResult) return FALSE;
-	
+
 	while(bResult) // ファイルが検索できる間繰り返します。
 	{
 		// ファイルを検索します。
@@ -303,8 +303,8 @@ BOOL CExtensionChangeDlg::GetFileList(CString path)
 		{
 			outputFilePath(filePath);
 		}
-	} 
-	
+	}
+
 	return TRUE;
 }
 
@@ -312,10 +312,7 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
 
-	if (listboxCount == 0) {
-		AfxMessageBox(_T("変換するファイルがありません"));
-		return;
-	}
+	if (listboxCount == 0) return;
 
 	CString filePath;
 
