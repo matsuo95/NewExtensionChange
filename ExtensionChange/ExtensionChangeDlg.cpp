@@ -363,16 +363,16 @@ void CExtensionChangeDlg::deleteListbox()
 
 void CExtensionChangeDlg::outputFilePath(CString filePath)
 {
-	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(L'\\') - 1);
-	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(L'.') - 1);
+	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
+	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);
 
 	if (listBox.count(filePath) == 1) { //既にリストボックスに存在
 		return;
 	}
-	else if (m_text_previousExtension == L"" && fileName.ReverseFind(L'.') != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
+	else if (m_text_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
 		return;
 	}
-	else if (m_text_previousExtension != L"" &&  m_text_previousExtension != fileExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
+	else if (m_text_previousExtension != _T("") &&  m_text_previousExtension != fileExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 		return;
 	}
 	else {
