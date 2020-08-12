@@ -201,26 +201,13 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
-	TCHAR tchrText[MAX_PATH + 1] = { _T('¥0') };
+	TCHAR tchrText[MAX_PATH];
 
 	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (bRes) {
 		GetFileList(tchrText);
 	}
-}
-
-int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData)
-{
-	switch (uMsg)
-	{
-	case BFFM_INITIALIZED:
-		SendMessage(hWnd, BFFM_SETSELECTION, (WPARAM)TRUE, lpData);
-		break;
-	case BFFM_SELCHANGED:
-		break;
-	}
-	return 0;
 }
 
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
@@ -239,7 +226,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 		browsInfo.pszDisplayName = lpSelectPath;
 		browsInfo.lpszTitle = lpTitle;
 		browsInfo.ulFlags = nFlag;
-		browsInfo.lpfn = &BrowseCallbackProc;
+		browsInfo.lpfn = NULL;
 		browsInfo.lParam = (LPARAM)lpDefFolder;
 		browsInfo.iImage = (int)NULL;
 

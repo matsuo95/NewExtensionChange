@@ -1,2 +1,3 @@
-﻿  Conversion.cpp
+﻿  ExtensionChangeDlg.cpp
+c:\work\4.extensionchange\extensionchange\extensionchange\extensionchangedlg.cpp(248): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
   ExtensionChange.vcxproj -> C:\Work\4.ExtensionChange\ExtensionChange\Debug\ExtensionChange.exe
