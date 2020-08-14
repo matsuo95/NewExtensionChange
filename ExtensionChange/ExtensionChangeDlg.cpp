@@ -125,14 +125,6 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 
 	DragAcceptFiles();
 
-	CString s(_T("abc"));
-	const int bufferSize = 1024;
-	LPTSTR p = s.GetBuffer(bufferSize);
-
-	s.Append(_T("a"));
-
-	s.ReleaseBuffer();
-
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
