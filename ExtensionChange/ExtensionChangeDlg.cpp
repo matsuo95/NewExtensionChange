@@ -125,6 +125,14 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 
 	DragAcceptFiles();
 
+	CString s(_T("abc"));
+	const int bufferSize = 1024;
+	LPTSTR p = s.GetBuffer(bufferSize);
+
+	s.Append(_T("a"));
+
+	s.ReleaseBuffer();
+
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
@@ -182,7 +190,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	UpdateData();
 
 	CString			filePath = _T("");
-	CFileDialog     selDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_ALLOWMULTISELECT);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_ALLOWMULTISELECT);
 
 	if (selDlg.DoModal() == IDOK) {
 		POSITION filepathPosition = selDlg.GetStartPosition();
@@ -201,12 +209,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
-	TCHAR tchrText[MAX_PATH];
+	TCHAR dir[MAX_PATH];
 
-	BOOL bRes = SelectFolder(this->m_hWnd, NULL, tchrText, BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL bRes = SelectFolder(this->m_hWnd, NULL, dir,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (bRes) {
-		GetFileList(tchrText);
+		GetFileList(dir);
 	}
 }
 
@@ -245,13 +253,14 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
 	CString filePath;
-	for (int i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
+	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
 
-		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length + 1), length + 1);
-		filePath.ReleaseBuffer();
+		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length), length + 1);
 
 		GetFileList(filePath);
+
+		filePath.ReleaseBuffer();
 	}
 }
 
