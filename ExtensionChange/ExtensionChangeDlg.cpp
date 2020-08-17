@@ -193,6 +193,10 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		}
 	}
 
+	if (m_list_filePath.GetCount() != 0) {
+		m_edit_previousExtension.SetReadOnly();
+	}
+
 	return;
 }
 
@@ -206,6 +210,10 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (selectResult) {
 		FileSearch(folderPath);
+	}
+
+	if (m_list_filePath.GetCount() != 0) {
+		m_edit_previousExtension.SetReadOnly();
 	}
 }
 
@@ -255,6 +263,10 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		FileSearch(path);
 
 		path.ReleaseBuffer();
+	}
+
+	if (m_list_filePath.GetCount() != 0) {
+		m_edit_previousExtension.SetReadOnly();
 	}
 }
 
@@ -341,6 +353,7 @@ void CExtensionChangeDlg::DeleteListbox()
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
 	m_listBox.clear();
+	m_edit_previousExtension.SetReadOnly(FALSE);
 }
 
 /// ファイルパスをリストボックスに出力する関数
