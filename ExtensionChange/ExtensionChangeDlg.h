@@ -40,7 +40,7 @@ public:
 
 	CListBox m_list_filePath;
 
-	std::set<CString> listBox;
+	std::set<CString> m_listBox;
 
 	afx_msg void OnBnClickedReferenceFileButton();
 	afx_msg void OnBnClickedReferenceFolderButton();
@@ -50,9 +50,9 @@ public:
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 
 	BOOL SelectFolder(HWND hWnd, LPCTSTR lpDefFolder, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
-	BOOL GetFileList(CString path);
+	void FileSearch(CString path);
 
-	void deleteListbox();
+	void DeleteListbox();
 
-	void outputFilePath(CString filePath);
+	void OutputFilePath(CString filePath);
 };

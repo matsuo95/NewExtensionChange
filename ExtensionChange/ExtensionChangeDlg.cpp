@@ -124,7 +124,6 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
 
 	DragAcceptFiles();
-
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
@@ -182,16 +181,14 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	UpdateData();
 
 	CString			filePath = _T("");
-	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_ALLOWMULTISELECT);
+	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_ALLOWMULTISELECT );
 
 	if (selDlg.DoModal() == IDOK) {
 		POSITION filepathPosition = selDlg.GetStartPosition();
-		if (filepathPosition != NULL) {
-			while (filepathPosition)
-			{
-				filePath = selDlg.GetNextPathName(filepathPosition);
-				GetFileList(filePath);
-			}
+		while (filepathPosition)
+		{
+			filePath = selDlg.GetNextPathName(filepathPosition);
+			FileSearch(filePath);
 		}
 	}
 
@@ -203,17 +200,17 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	UpdateData();
 	TCHAR dir[MAX_PATH];
 
-	BOOL bRes = SelectFolder(this->m_hWnd, NULL, dir,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, dir,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
-	if (bRes) {
-		GetFileList(dir);
+	if (selectResult) {
+		FileSearch(dir);
 	}
 }
 
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
-	BOOL bRet = FALSE;
+	BOOL selectResult = FALSE;
 
 	if (SUCCEEDED(SHGetMalloc(&pMalloc))) {
 		BROWSEINFO browsInfo;
@@ -232,13 +229,14 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
 		if(pIDlist) {
-			SHGetPathFromIDList(pIDlist, lpSelectPath);
-			bRet = TRUE;
+			if (SHGetPathFromIDList(pIDlist, lpSelectPath)) {
+				selectResult = TRUE;
+			};
 			pMalloc->Free(pIDlist);
 		}
 		pMalloc->Release();
 	}
-	return bRet;
+	return selectResult;
 }
 
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
@@ -246,17 +244,17 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 	UpdateData();
 	CString filePath;
 	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
-		UINT length = DragQueryFile(hDropInfo, i, NULL, 0);
+		UINT bufferLength = DragQueryFile(hDropInfo, i, NULL, 0);
 
-		DragQueryFile(hDropInfo, i, filePath.GetBuffer(length), length + 1);
+		DragQueryFile(hDropInfo, i, filePath.GetBuffer(bufferLength), bufferLength + 1);
 
-		GetFileList(filePath);
+		FileSearch(filePath);
 
 		filePath.ReleaseBuffer();
 	}
 }
 
-BOOL CExtensionChangeDlg::GetFileList(CString path)
+void CExtensionChangeDlg::FileSearch(CString path)
 {
 	CPath Path = path;
 	if (Path.IsDirectory()) {
@@ -265,16 +263,13 @@ BOOL CExtensionChangeDlg::GetFileList(CString path)
 
 	// ファイル検索を開始します。
 	CFileFind fileFind;
-	BOOL bResult = fileFind.FindFile(Path);
+	BOOL searchResult = fileFind.FindFile(Path);
 
-	// ファイル検索ができない場合、終了します。
-	if (!bResult) return FALSE;
-
-	while(bResult) // ファイルが検索できる間繰り返します。
+	while(searchResult) // ファイルが検索できる間繰り返します。
 	{
 		// ファイルを検索します。
 		// 次のファイル・ディレクトリがない場合、FALSEが返却されます。
-		bResult = fileFind.FindNextFile();
+		searchResult = fileFind.FindNextFile();
 
 		// "."または".."の場合、次を検索します。
 		if (fileFind.IsDots()) continue;
@@ -284,16 +279,16 @@ BOOL CExtensionChangeDlg::GetFileList(CString path)
 		if (fileFind.IsDirectory()) // 検索した結果がディレクトリの場合
 		{
 			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
-				GetFileList(filePath);
+				FileSearch(filePath);
 			}
 		}
 		else // ファイルの場合
 		{
-			outputFilePath(filePath);
+			OutputFilePath(filePath);
 		}
 	}
 
-	return TRUE;
+	return;
 }
 
 void CExtensionChangeDlg::OnBnClickedConversionFileButton()
@@ -325,27 +320,27 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 		AfxMessageBox(Message);
 	}
 
-	deleteListbox();
+	DeleteListbox();
 }
 
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
-	deleteListbox();
+	DeleteListbox();
 }
 
-void CExtensionChangeDlg::deleteListbox() 
+void CExtensionChangeDlg::DeleteListbox() 
 {
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
 	plist->ResetContent();
-	listBox.clear();
+	m_listBox.clear();
 }
 
-void CExtensionChangeDlg::outputFilePath(CString filePath)
+void CExtensionChangeDlg::OutputFilePath(CString filePath)
 {
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);
 
-	if (listBox.count(filePath) == 1) { //既にリストボックスに存在
+	if (m_listBox.count(filePath) == 1) { //既にリストボックスに存在
 		return;
 	}
 	else if (m_text_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
@@ -355,7 +350,7 @@ void CExtensionChangeDlg::outputFilePath(CString filePath)
 		return;
 	}
 	else {
-		listBox.insert(filePath);
+		m_listBox.insert(filePath);
 		m_list_filePath.AddString(filePath);
 	}
 }
