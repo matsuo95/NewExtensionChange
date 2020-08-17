@@ -198,12 +198,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
-	TCHAR dir[MAX_PATH];
+	TCHAR folderPath[MAX_PATH];
 
-	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, dir,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, folderPath,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (selectResult) {
-		FileSearch(dir);
+		FileSearch(folderPath);
 	}
 }
 
@@ -242,28 +242,32 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
-	CString filePath;
+	CString path;
 	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
 		UINT bufferLength = DragQueryFile(hDropInfo, i, NULL, 0);
 
-		DragQueryFile(hDropInfo, i, filePath.GetBuffer(bufferLength), bufferLength + 1);
+		DragQueryFile(hDropInfo, i, path.GetBuffer(bufferLength), bufferLength + 1);
 
-		FileSearch(filePath);
+		FileSearch(path);
 
-		filePath.ReleaseBuffer();
+		path.ReleaseBuffer();
 	}
 }
-
-void CExtensionChangeDlg::FileSearch(CString path)
+///
+void CExtensionChangeDlg::FileSearch(CString strPath)
 {
-	CPath Path = path;
-	if (Path.IsDirectory()) {
-		Path.Append(_T("*"));
+	CPath cPath = strPath;
+	if (cPath.IsDirectory()) {
+		cPath.Append(_T("*"));
+	}
+	else {
+		OutputFilePath(cPath);
+		return;
 	}
 
 	// ファイル検索を開始します。
 	CFileFind fileFind;
-	BOOL searchResult = fileFind.FindFile(Path);
+	BOOL searchResult = fileFind.FindFile(cPath);
 
 	while(searchResult) // ファイルが検索できる間繰り返します。
 	{
@@ -274,17 +278,17 @@ void CExtensionChangeDlg::FileSearch(CString path)
 		// "."または".."の場合、次を検索します。
 		if (fileFind.IsDots()) continue;
 
-		CString filePath = fileFind.GetFilePath();
+		CString path = fileFind.GetFilePath();
 
 		if (fileFind.IsDirectory()) // 検索した結果がディレクトリの場合
 		{
 			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
-				FileSearch(filePath);
+				FileSearch(path);
 			}
 		}
 		else // ファイルの場合
 		{
-			OutputFilePath(filePath);
+			OutputFilePath(path);
 		}
 	}
 
@@ -303,21 +307,21 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
-	int Errno = 0, errCount = 0;
+	int errNo = 0, errCount = 0;
 
 	for (int i = 0; i < listboxCount; i++) {
 		m_list_filePath.GetText(i, filePath);
-		Errno = extensionConversion.RenameExtension(filePath);
-		if (Errno) errCount++;
+		errNo = extensionConversion.RenameExtension(filePath);
+		if (errNo) errCount++;
 	}
 
 	if (errCount == 0) {
 		MessageBox(_T("全てのファイルの変換が完了しました"));
 	}
 	else {
-		CString Message;
-		Message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
-		AfxMessageBox(Message);
+		CString message;
+		message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
+		AfxMessageBox(message);
 	}
 
 	DeleteListbox();
