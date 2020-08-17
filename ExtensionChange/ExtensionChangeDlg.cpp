@@ -270,28 +270,24 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 		return;
 	}
 
-	// ファイル検索を開始します。
 	CFileFind fileFind;
 	BOOL searchResult = fileFind.FindFile(cPath);
 
-	while(searchResult) // ファイルが検索できる間繰り返します。
+	while(searchResult)
 	{
-		// ファイルを検索します。
-		// 次のファイル・ディレクトリがない場合、FALSEが返却されます。
 		searchResult = fileFind.FindNextFile();
 
-		// "."または".."の場合、次を検索します。
 		if (fileFind.IsDots()) continue;
 
 		CString path = fileFind.GetFilePath();
 
-		if (fileFind.IsDirectory()) // 検索した結果がディレクトリの場合
+		if (fileFind.IsDirectory()) 
 		{
 			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
 				FileSearch(path);
 			}
 		}
-		else // ファイルの場合
+		else 
 		{
 			OutputFilePath(path);
 		}
