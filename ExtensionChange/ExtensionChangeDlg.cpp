@@ -176,6 +176,7 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+/// ファイル参照ボタンを押したときに呼び出される関数
 void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	UpdateData();
@@ -195,6 +196,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	return;
 }
 
+/// フォルダ参照ボタンを押したときに呼び出される関数
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
@@ -207,6 +209,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	}
 }
 
+/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -239,6 +242,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 	return selectResult;
 }
 
+/// ファイルまたはフォルダをドラッグアンドドロップしたときに呼び出される関数
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
@@ -253,7 +257,8 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		path.ReleaseBuffer();
 	}
 }
-///
+
+/// フォルダ内のファイルを探索するための関数
 void CExtensionChangeDlg::FileSearch(CString strPath)
 {
 	CPath cPath = strPath;
@@ -295,6 +300,7 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 	return;
 }
 
+/// 変換ボタンを押したときに呼び出される関数
 void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
@@ -327,11 +333,13 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	DeleteListbox();
 }
 
+/// クリアボタンを押したときに呼び出される関数
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
 	DeleteListbox();
 }
 
+/// リストボックスに表示されているパスをすべて削除する関数
 void CExtensionChangeDlg::DeleteListbox() 
 {
 	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
@@ -339,6 +347,7 @@ void CExtensionChangeDlg::DeleteListbox()
 	m_listBox.clear();
 }
 
+/// ファイルパスをリストボックスに出力する関数
 void CExtensionChangeDlg::OutputFilePath(CString filePath)
 {
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
