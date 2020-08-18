@@ -184,7 +184,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	CString			filePath = _T("");
 	CFileDialog     selDlg(TRUE, NULL, NULL,OFN_ALLOWMULTISELECT );
 
-	if (selDlg.DoModal() == IDOK) {
+	if (selDlg.DoModal() == IDOK) 
+	{
 		POSITION filepathPosition = selDlg.GetStartPosition();
 		while (filepathPosition)
 		{
@@ -193,7 +194,8 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		}
 	}
 
-	if (m_list_filePath.GetCount() != 0) {
+	if (m_list_filePath.GetCount()) 
+	{
 		m_edit_previousExtension.SetReadOnly();
 	}
 
@@ -206,13 +208,15 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	UpdateData();
 	TCHAR folderPath[MAX_PATH];
 
-	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, folderPath,BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, folderPath, BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
-	if (selectResult) {
+	if (selectResult) 
+	{
 		FileSearch(folderPath);
 	}
 
-	if (m_list_filePath.GetCount() != 0) {
+	if (m_list_filePath.GetCount()) 
+	{
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -223,7 +227,8 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 	LPMALLOC pMalloc;
 	BOOL selectResult = FALSE;
 
-	if (SUCCEEDED(SHGetMalloc(&pMalloc))) {
+	if (SUCCEEDED(SHGetMalloc(&pMalloc))) 
+	{
 		BROWSEINFO browsInfo;
 		ITEMIDLIST *pIDlist;
 
@@ -240,7 +245,8 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
 		if(pIDlist) {
-			if (SHGetPathFromIDList(pIDlist, lpSelectPath)) {
+			if (SHGetPathFromIDList(pIDlist, lpSelectPath)) 
+			{
 				selectResult = TRUE;
 			};
 			pMalloc->Free(pIDlist);
@@ -255,7 +261,8 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
 	CString path;
-	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++) {
+	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++)
+	{
 		UINT bufferLength = DragQueryFile(hDropInfo, i, NULL, 0);
 
 		DragQueryFile(hDropInfo, i, path.GetBuffer(bufferLength), bufferLength + 1);
@@ -265,7 +272,8 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		path.ReleaseBuffer();
 	}
 
-	if (m_list_filePath.GetCount() != 0) {
+	if (m_list_filePath.GetCount()) 
+	{
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -274,10 +282,12 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 void CExtensionChangeDlg::FileSearch(CString strPath)
 {
 	CPath cPath = strPath;
-	if (cPath.IsDirectory()) {
+	if (cPath.IsDirectory()) 
+	{
 		cPath.Append(_T("*"));
 	}
-	else {
+	else 
+	{
 		OutputFilePath(cPath);
 		return;
 	}
@@ -295,7 +305,8 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 
 		if (fileFind.IsDirectory()) 
 		{
-			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) {
+			if (((CButton*)GetDlgItem(IDC_CHECK1))->GetCheck() == BST_CHECKED) 
+			{
 				FileSearch(path);
 			}
 		}
@@ -315,7 +326,7 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	if (listboxCount == 0) return;
 
-	CString filePath;
+	CString filePath = _T("");
 
 	UpdateData();
 
@@ -323,16 +334,19 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	int errNo = 0, errCount = 0;
 
-	for (int i = 0; i < listboxCount; i++) {
+	for (int i = 0; i < listboxCount; i++)
+	{
 		m_list_filePath.GetText(i, filePath);
 		errNo = extensionConversion.RenameExtension(filePath);
 		if (errNo) errCount++;
 	}
 
-	if (errCount == 0) {
+	if (errCount == 0) 
+	{
 		MessageBox(_T("全てのファイルの変換が完了しました"));
 	}
-	else {
+	else
+	{
 		CString message;
 		message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
 		AfxMessageBox(message);
@@ -350,8 +364,7 @@ void CExtensionChangeDlg::OnBnClickedClearButton()
 /// リストボックスに表示されているパスをすべて削除する関数
 void CExtensionChangeDlg::DeleteListbox() 
 {
-	CListBox* plist = (CListBox*)GetDlgItem(IDC_LIST1);
-	plist->ResetContent();
+	m_list_filePath.ResetContent();
 	m_listBox.clear();
 	m_edit_previousExtension.SetReadOnly(FALSE);
 }
@@ -362,16 +375,20 @@ void CExtensionChangeDlg::OutputFilePath(CString filePath)
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);
 
-	if (m_listBox.count(filePath) == 1) { //既にリストボックスに存在
+	if (m_listBox.count(filePath) == 1) 
+	{ //既にリストボックスに存在
 		return;
 	}
-	else if (m_text_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) { //変換前拡張子がなし、判定したいファイルの拡張子はあり
+	else if (m_text_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) 
+	{ //変換前拡張子がなし、判定したいファイルの拡張子はあり
 		return;
 	}
-	else if (m_text_previousExtension != _T("") &&  m_text_previousExtension != fileExtension) { //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
+	else if (m_text_previousExtension != _T("") &&  m_text_previousExtension != fileExtension)
+	{ //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 		return;
 	}
-	else {
+	else 
+	{
 		m_listBox.insert(filePath);
 		m_list_filePath.AddString(filePath);
 	}
