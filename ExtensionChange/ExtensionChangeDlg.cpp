@@ -389,7 +389,10 @@ void CExtensionChangeDlg::OutputFilePath(CString filePath)
 	}
 	else 
 	{
-		m_listBox.insert(filePath);
-		m_list_filePath.AddString(filePath);
+		bool res = m_listBox.insert(filePath).second;
+		if (res) 
+		{
+			m_list_filePath.AddString(filePath);
+		}
 	}
 }
