@@ -176,7 +176,7 @@ HCURSOR CExtensionChangeDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-/// ファイル参照ボタンを押したときに呼び出される関数
+/// ファイル参照ボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 {
 	UpdateData();
@@ -202,7 +202,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 	return;
 }
 
-/// フォルダ参照ボタンを押したときに呼び出される関数
+/// フォルダ参照ボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
@@ -221,7 +221,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	}
 }
 
-/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数
+/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:フォルダ選択ダイアログへのハンドル,コールバック関数への引数,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -278,7 +278,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 	}
 }
 
-/// フォルダ内のファイルを探索するための関数
+/// フォルダ内のファイルを探索するための関数(引数:ファイルパスまたはフォルダパスの文字列、戻り値:なし)
 void CExtensionChangeDlg::FileSearch(CString strPath)
 {
 	CPath cPath = strPath;
@@ -319,7 +319,7 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 	return;
 }
 
-/// 変換ボタンを押したときに呼び出される関数
+/// 変換ボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
@@ -355,13 +355,13 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	DeleteListbox();
 }
 
-/// クリアボタンを押したときに呼び出される関数
+/// クリアボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
 	DeleteListbox();
 }
 
-/// リストボックスに表示されているパスをすべて削除する関数
+/// リストボックスに表示されているパスをすべて削除する関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::DeleteListbox() 
 {
 	m_list_filePath.ResetContent();
@@ -369,7 +369,7 @@ void CExtensionChangeDlg::DeleteListbox()
 	m_edit_previousExtension.SetReadOnly(FALSE);
 }
 
-/// ファイルパスをリストボックスに出力する関数
+/// ファイルパスをリストボックスに出力する関数(引数:ファイルパスの文字列、戻り値:なし)
 void CExtensionChangeDlg::OutputFilePath(CString filePath)
 {
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
