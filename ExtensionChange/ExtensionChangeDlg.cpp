@@ -192,15 +192,15 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 			filePath = selDlg.GetNextPathName(filepathPosition);
 			FileSearch(filePath);
 		}
-	}
 
-	if (m_list_filePath.GetCount() && m_outputListboxCount)
-	{
-		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
-		MessageBox(message);
-		m_outputListboxCount = 0;
-		m_edit_previousExtension.SetReadOnly();
+		if (m_list_filePath.GetCount() && m_outputListboxCount)
+		{
+			CString message;
+			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
+			MessageBox(message);
+			m_outputListboxCount = 0;
+			m_edit_previousExtension.SetReadOnly();
+		}
 	}
 
 	return;
@@ -217,16 +217,17 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	if (selectResult) 
 	{
 		FileSearch(folderPath);
+
+		if (m_list_filePath.GetCount() && m_outputListboxCount)
+		{
+			CString message;
+			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
+			MessageBox(message);
+			m_outputListboxCount = 0;
+			m_edit_previousExtension.SetReadOnly();
+		}
 	}
 
-	if (m_list_filePath.GetCount() && m_outputListboxCount) 
-	{
-		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
-		MessageBox(message);
-		m_outputListboxCount = 0;
-		m_edit_previousExtension.SetReadOnly();
-	}
 }
 
 /// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:フォルダ選択ダイアログへのハンドル,コールバック関数への引数,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
@@ -283,7 +284,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 	if (m_list_filePath.GetCount() && m_outputListboxCount) 
 	{
 		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
+		message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
 		MessageBox(message);
 		m_outputListboxCount = 0;
 		m_edit_previousExtension.SetReadOnly();
@@ -390,17 +391,17 @@ void CExtensionChangeDlg::OnBnClickedClearButton()
 void CExtensionChangeDlg::DeleteListbox() 
 {
 	m_list_filePath.ResetContent();
-	m_listBox.clear();
+	m_setFileList.clear();
 	m_edit_previousExtension.SetReadOnly(FALSE);
 }
 
-/// ファイルパスをリストボックスに出力する関数(引数:ファイルパスの文字列、戻り値:なし)
+/// 条件に応じて、ファイルパスをリストボックスに追加する関数(引数:ファイルパスの文字列、戻り値:なし)
 void CExtensionChangeDlg::OutputFilePath(CString filePath)
 {
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);
 
-	if (m_listBox.count(filePath) == 1) 
+	if (m_setFileList.count(filePath) == 1) 
 	{ //既にリストボックスに存在
 		return;
 	}
@@ -412,10 +413,10 @@ void CExtensionChangeDlg::OutputFilePath(CString filePath)
 	{ //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 		return;
 	}
-	else 
+	else
 	{
-		bool res = m_listBox.insert(filePath).second;
-		if (res) 
+		bool res = m_setFileList.insert(filePath).second;
+		if (res)
 		{
 			m_outputListboxCount++;
 			m_list_filePath.AddString(filePath);

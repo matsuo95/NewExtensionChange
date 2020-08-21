@@ -40,7 +40,7 @@ public:
 
 	CListBox m_list_filePath;
 
-	std::set<CString> m_listBox;
+	std::set<CString> m_setFileList;
 	int m_outputListboxCount = 0;
 
 	afx_msg void OnBnClickedReferenceFileButton();
