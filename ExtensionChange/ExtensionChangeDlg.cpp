@@ -196,6 +196,10 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 
 	if (m_list_filePath.GetCount()) 
 	{
+		CString message;
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		MessageBox(message);
+		m_outputListbox = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 
@@ -217,6 +221,10 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 	if (m_list_filePath.GetCount()) 
 	{
+		CString message;
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		MessageBox(message);
+		m_outputListbox = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -274,6 +282,10 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 	if (m_list_filePath.GetCount()) 
 	{
+		CString message;
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		MessageBox(message);
+		m_outputListbox = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -392,6 +404,7 @@ void CExtensionChangeDlg::OutputFilePath(CString filePath)
 		bool res = m_listBox.insert(filePath).second;
 		if (res) 
 		{
+			m_outputListbox++;
 			m_list_filePath.AddString(filePath);
 		}
 	}
