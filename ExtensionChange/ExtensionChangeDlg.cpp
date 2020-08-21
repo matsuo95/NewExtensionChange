@@ -194,12 +194,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		}
 	}
 
-	if (m_list_filePath.GetCount() && m_outputListbox)
+	if (m_list_filePath.GetCount() && m_outputListboxCount)
 	{
 		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
 		MessageBox(message);
-		m_outputListbox = 0;
+		m_outputListboxCount = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 
@@ -221,12 +221,12 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 		FileSearch(folderPath);
 	}
 
-	if (m_list_filePath.GetCount() && m_outputListbox) 
+	if (m_list_filePath.GetCount() && m_outputListboxCount) 
 	{
 		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
 		MessageBox(message);
-		m_outputListbox = 0;
+		m_outputListboxCount = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -282,12 +282,12 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		path.ReleaseBuffer();
 	}
 
-	if (m_list_filePath.GetCount() && m_outputListbox) 
+	if (m_list_filePath.GetCount() && m_outputListboxCount) 
 	{
 		CString message;
-		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListbox);
+		message.Format(_T("%d個のファイルパスを出力しました"), m_outputListboxCount);
 		MessageBox(message);
-		m_outputListbox = 0;
+		m_outputListboxCount = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
 }
@@ -346,23 +346,36 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
-	int errNo = 0, errCount = 0;
+	int errNo = 0, errCount = 0, notErrCount = 0;
 
 	for (int i = 0; i < listboxCount; i++)
 	{
 		m_list_filePath.GetText(i, filePath);
 		errNo = extensionConversion.RenameExtension(filePath);
-		if (errNo) errCount++;
+		if (errNo) 
+		{
+			errCount++;
+		}
+		else 
+		{
+			notErrCount++;
+		}
 	}
 
+	CString message;
 	if (errCount == 0) 
 	{
-		MessageBox(_T("全てのファイルの変換が完了しました"));
+		message.Format(_T("%d個のファイルの変換が完了しました"), notErrCount);
+		MessageBox(message);
+	}
+	else if (notErrCount == 0) 
+	{
+		message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
+		AfxMessageBox(message);
 	}
 	else
 	{
-		CString message;
-		message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
+		message.Format(_T("%d個のファイルの変換が完了しました\n%d個のファイルの変換に失敗しました"),notErrCount, errCount);
 		AfxMessageBox(message);
 	}
 
@@ -406,7 +419,7 @@ void CExtensionChangeDlg::OutputFilePath(CString filePath)
 		bool res = m_listBox.insert(filePath).second;
 		if (res) 
 		{
-			m_outputListbox++;
+			m_outputListboxCount++;
 			m_list_filePath.AddString(filePath);
 		}
 	}
