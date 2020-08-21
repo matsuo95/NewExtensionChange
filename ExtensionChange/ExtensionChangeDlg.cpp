@@ -203,8 +203,6 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 		m_edit_previousExtension.SetReadOnly();
 	}
 
-	
-
 	return;
 }
 
