@@ -265,7 +265,8 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
 	CString path;
-	for (UINT i = 0; i < DragQueryFile(hDropInfo, -1, NULL, 0); i++)
+	int fileCount = DragQueryFile(hDropInfo, -1, NULL, 0);
+	for (int i = 0; i < fileCount; i++)
 	{
 		UINT bufferLength = DragQueryFile(hDropInfo, i, NULL, 0);
 
