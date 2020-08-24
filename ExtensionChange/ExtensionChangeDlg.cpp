@@ -271,9 +271,8 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 		DragQueryFile(hDropInfo, i, path.GetBuffer(bufferLength), bufferLength + 1);
 
-		FileSearch(path);
-
 		path.ReleaseBuffer();
+		FileSearch(path);
 	}
 
 	if (m_outputListboxCount) 
@@ -284,6 +283,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		m_outputListboxCount = 0;
 		m_edit_previousExtension.SetReadOnly();
 	}
+	CDialogEx::OnDropFiles(hDropInfo);
 }
 
 /// フォルダ内のファイルを探索するための関数(引数:ファイルパスまたはフォルダパスの文字列、戻り値:なし)
