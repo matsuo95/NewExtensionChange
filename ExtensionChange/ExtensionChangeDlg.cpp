@@ -341,13 +341,13 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
 
-	int errNo = 0, errCount = 0, notErrCount = 0;
+	int errCode = 0, errCount = 0, notErrCount = 0;
 
 	for (int i = 0; i < listboxCount; i++)
 	{
 		m_list_filePath.GetText(i, filePath);
-		errNo = extensionConversion.RenameExtension(filePath);
-		if (errNo) 
+		errCode = extensionConversion.RenameExtension(filePath);
+		if (errCode) 
 		{
 			errCount++;
 		}
@@ -357,22 +357,17 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 		}
 	}
 
-	CString message;
-	if (errCount == 0) 
+	CString message = _T("");
+	if (notErrCount) 
 	{
-		message.Format(_T("%d個のファイルの変換が完了しました"), notErrCount);
-		MessageBox(message);
+		message.Format(_T("%d個のファイルの変換が完了しました\n"), notErrCount);
 	}
-	else if (notErrCount == 0) 
+	if(errCount) 
 	{
-		message.Format(_T("%d個のファイルの変換に失敗しました"), errCount);
-		AfxMessageBox(message);
+		message.Format(message + _T("%d個のファイルの変換に失敗しました\n"), errCount);
 	}
-	else
-	{
-		message.Format(_T("%d個のファイルの変換が完了しました\n%d個のファイルの変換に失敗しました"),notErrCount, errCount);
-		AfxMessageBox(message);
-	}
+
+	MessageBox(message);
 
 	DeleteListbox();
 }
