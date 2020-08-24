@@ -244,13 +244,8 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,
 		memset(&browsInfo, NULL, sizeof(browsInfo));
 
 		browsInfo.hwndOwner = hWnd;
-		browsInfo.pidlRoot = NULL;
-		browsInfo.pszDisplayName = NULL;
 		browsInfo.lpszTitle = lpTitle;
 		browsInfo.ulFlags = nFlag;
-		browsInfo.lpfn = NULL;
-		browsInfo.lParam = NULL;
-		browsInfo.iImage = (int)NULL;
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
 		if(pIDlist) {

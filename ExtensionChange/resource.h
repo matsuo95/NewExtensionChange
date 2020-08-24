@@ -14,6 +14,7 @@
 #define IDC_LIST1                       1009
 #define IDC_BUTTON5                     1010
 #define IDC_CHECK1                      1013
+#define IDC_CHECK_SUBFOLDER_REFERENCE   1013
 #define IDC_BUTTON1                     1014
 #define IDC_LIST2                       1015
 
