@@ -193,7 +193,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 			FileSearch(filePath);
 		}
 
-		if (m_list_filePath.GetCount() && m_outputListboxCount)
+		if (m_outputListboxCount)
 		{
 			CString message;
 			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
@@ -218,7 +218,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	{
 		FileSearch(folderPath);
 
-		if (m_list_filePath.GetCount() && m_outputListboxCount)
+		if (m_outputListboxCount)
 		{
 			CString message;
 			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
@@ -245,7 +245,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,
 
 		browsInfo.hwndOwner = hWnd;
 		browsInfo.pidlRoot = NULL;
-		browsInfo.pszDisplayName = lpSelectPath;
+		browsInfo.pszDisplayName = NULL;
 		browsInfo.lpszTitle = lpTitle;
 		browsInfo.ulFlags = nFlag;
 		browsInfo.lpfn = NULL;
@@ -281,7 +281,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		path.ReleaseBuffer();
 	}
 
-	if (m_list_filePath.GetCount() && m_outputListboxCount) 
+	if (m_outputListboxCount) 
 	{
 		CString message;
 		message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
