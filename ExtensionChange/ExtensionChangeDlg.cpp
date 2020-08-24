@@ -212,7 +212,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	UpdateData();
 	TCHAR folderPath[MAX_PATH];
 
-	BOOL selectResult = SelectFolder(this->m_hWnd, NULL, folderPath, BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
+	BOOL selectResult = SelectFolder(this->m_hWnd, folderPath, BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
 	if (selectResult) 
 	{
@@ -231,7 +231,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 }
 
 /// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:フォルダ選択ダイアログへのハンドル,コールバック関数への引数,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
-BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
+BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
 	BOOL selectResult = FALSE;
@@ -249,7 +249,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPCTSTR lpDefFolder,LPTSTR lpSe
 		browsInfo.lpszTitle = lpTitle;
 		browsInfo.ulFlags = nFlag;
 		browsInfo.lpfn = NULL;
-		browsInfo.lParam = (LPARAM)lpDefFolder;
+		browsInfo.lParam = NULL;
 		browsInfo.iImage = (int)NULL;
 
 		pIDlist = SHBrowseForFolder(&browsInfo);
