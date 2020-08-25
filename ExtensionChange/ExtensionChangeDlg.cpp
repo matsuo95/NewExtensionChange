@@ -195,7 +195,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 
 		if (m_outputListboxCount)
 		{
-			CString message;
+			CString message = _T("");
 			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
 			MessageBox(message);
 			m_outputListboxCount = 0;
@@ -220,7 +220,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 		if (m_outputListboxCount)
 		{
-			CString message;
+			CString message = _T("");
 			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
 			MessageBox(message);
 			m_outputListboxCount = 0;
@@ -230,7 +230,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 
 }
 
-/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:フォルダ選択ダイアログへのハンドル,コールバック関数への引数,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
+/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:メインダイアログへのハンドル,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -264,7 +264,7 @@ BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,
 void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 {
 	UpdateData();
-	CString path;
+	CString path = _T("");
 	int fileCount = DragQueryFile(hDropInfo, -1, NULL, 0);
 	for (int i = 0; i < fileCount; i++)
 	{
@@ -278,7 +278,7 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 
 	if (m_outputListboxCount) 
 	{
-		CString message;
+		CString message = _T("");
 		message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
 		MessageBox(message);
 		m_outputListboxCount = 0;
@@ -368,7 +368,6 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	}
 
 	MessageBox(message);
-
 	DeleteListbox();
 }
 
