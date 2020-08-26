@@ -123,7 +123,6 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
 
 	DragAcceptFiles();
-	AddListbox(_T("test"));
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
