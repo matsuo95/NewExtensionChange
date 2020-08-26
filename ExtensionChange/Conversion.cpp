@@ -8,10 +8,12 @@ Conversion::Conversion(CString previousExtension, CString afterExtension)
 
 CString Conversion::ConvertExtensionString(CString filePath) {//ƒtƒ@ƒCƒ‹ƒpƒX‚ÌŠg’£q•”•ª‚Ì•¶š—ñ•ÏX
 
-	if (m_previousExtension == _T("")) {
+	if (m_previousExtension == _T("")) 
+	{
 		filePath += (_T('.'));
 	}
-	else {
+	else
+	{
 		filePath.Delete(filePath.ReverseFind(_T('.')) + 1, _tcslen(m_previousExtension));
 	}
 
@@ -26,15 +28,17 @@ int Conversion::RenameExtension(CString filePath) {//_wrenameŠÖ”‚Åƒtƒ@ƒCƒ‹ƒpƒX‚
 
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);
 
-	if (fileExtension == fileName) {
+	if (fileExtension == fileName) 
+	{
 		fileExtension = _T("");
 	}
 
 	int res = 0;
 
-	if (fileExtension == m_previousExtension) {
+	if (fileExtension == m_previousExtension) 
+	{
 		CString newFilePath = ConvertExtensionString(filePath);
-		res = _wrename(filePath, newFilePath);
+		res = _trename(filePath, newFilePath);
 	}
 
 	return res;

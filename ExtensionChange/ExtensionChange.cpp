@@ -54,7 +54,6 @@ BOOL CExtensionChangeApp::InitInstance()
 
 
 	AfxEnableControlContainer();
-
 	// ダイアログにシェル ツリー ビューまたはシェル リスト ビュー コントロールが
 	// 含まれている場合にシェル マネージャーを作成します。
 	CShellManager *pShellManager = new CShellManager;

@@ -210,7 +210,7 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 {
 	UpdateData();
-	TCHAR folderPath[MAX_PATH];
+	TCHAR folderPath[MAX_PATH] = {};
 
 	BOOL selectResult = SelectFolder(this->m_hWnd, folderPath, BIF_NEWDIALOGSTYLE, _T("フォルダーを選択してください。"));
 
@@ -297,7 +297,7 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 	}
 	else 
 	{
-		OutputFilePath(cPath);
+		AddListbox(cPath);
 		return;
 	}
 
@@ -321,7 +321,7 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 		}
 		else 
 		{
-			OutputFilePath(path);
+			AddListbox(path);
 		}
 	}
 
@@ -333,7 +333,7 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
 	int listboxCount = m_list_filePath.GetCount();
 
-	if (listboxCount == 0) return;
+	if (listboxCount <= 0) return;
 
 	CString filePath = _T("");
 
@@ -368,25 +368,26 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 	}
 
 	MessageBox(message);
-	DeleteListbox();
+	ClearListbox();
+	m_edit_previousExtension.SetReadOnly(FALSE);
 }
 
 /// クリアボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
-	DeleteListbox();
-}
-
-/// リストボックスに表示されているパスをすべて削除する関数(引数:なし、戻り値:なし)
-void CExtensionChangeDlg::DeleteListbox() 
-{
-	m_list_filePath.ResetContent();
-	m_setFileList.clear();
+	ClearListbox();
 	m_edit_previousExtension.SetReadOnly(FALSE);
 }
 
+/// リストボックスに表示されているパスをすべて削除する関数(引数:なし、戻り値:なし)
+void CExtensionChangeDlg::ClearListbox() 
+{
+	m_list_filePath.ResetContent();
+	m_setFileList.clear();
+}
+
 /// 条件に応じて、ファイルパスをリストボックスに追加する関数(引数:ファイルパスの文字列、戻り値:なし)
-void CExtensionChangeDlg::OutputFilePath(CString filePath)
+void CExtensionChangeDlg::AddListbox(CString filePath)
 {
 	CString fileName = filePath.Right(_tcslen(filePath) - filePath.ReverseFind(_T('\\')) - 1);
 	CString fileExtension = fileName.Right(_tcslen(fileName) - fileName.ReverseFind(_T('.')) - 1);

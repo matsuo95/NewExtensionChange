@@ -53,7 +53,7 @@ public:
 	BOOL SelectFolder(HWND hWnd, LPTSTR lpSelectPath, UINT nFlag, LPCTSTR lpTitle);
 	void FileSearch(CString path);
 
-	void DeleteListbox();
+	void ClearListbox();
 
-	void OutputFilePath(CString filePath);
+	void AddListbox(CString filePath);
 };
