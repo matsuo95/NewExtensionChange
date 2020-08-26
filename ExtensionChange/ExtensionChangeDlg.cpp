@@ -55,8 +55,8 @@ END_MESSAGE_MAP()
 CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EXTENSIONCHANGE_DIALOG, pParent)
 	
-	, m_text_previousExtension(_T(""))
-	, m_text_afterExtension(_T(""))
+	, m_previousExtension(_T(""))
+	, m_afterExtension(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -64,11 +64,10 @@ CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 void CExtensionChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT2, m_edit_previousExtension);
-	DDX_Control(pDX, IDC_EDIT3, m_edit_afterExtension);
-	DDX_Control(pDX, IDC_LIST1, m_list_filePath);
-	DDX_Text(pDX, IDC_EDIT2, m_text_previousExtension);
-	DDX_Text(pDX, IDC_EDIT3, m_text_afterExtension);
+	DDX_Control(pDX, IDC_EDIT2, m_cPreviousExtension);
+	DDX_Control(pDX, IDC_LIST1, m_convertFilePath);
+	DDX_Text(pDX, IDC_EDIT2, m_previousExtension);
+	DDX_Text(pDX, IDC_EDIT3, m_afterExtension);
 }
 
 BEGIN_MESSAGE_MAP(CExtensionChangeDlg, CDialogEx)
@@ -124,6 +123,7 @@ BOOL CExtensionChangeDlg::OnInitDialog()
 	((CEdit*)GetDlgItem(IDC_EDIT3))->SetWindowText(after_extension_default);
 
 	DragAcceptFiles();
+	AddListbox(_T("test"));
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
@@ -193,13 +193,13 @@ void CExtensionChangeDlg::OnBnClickedReferenceFileButton()
 			FileSearch(filePath);
 		}
 
-		if (m_outputListboxCount)
+		if (m_addListboxCount)
 		{
 			CString message = _T("");
-			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
+			message.Format(_T("%d個のファイルパスを追加しました"), m_addListboxCount);
 			MessageBox(message);
-			m_outputListboxCount = 0;
-			m_edit_previousExtension.SetReadOnly();
+			m_addListboxCount = 0;
+			m_cPreviousExtension.SetReadOnly();
 		}
 	}
 
@@ -218,19 +218,20 @@ void CExtensionChangeDlg::OnBnClickedReferenceFolderButton()
 	{
 		FileSearch(folderPath);
 
-		if (m_outputListboxCount)
+		if (m_addListboxCount)
 		{
 			CString message = _T("");
-			message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
+			message.Format(_T("%d個のファイルパスを追加しました"), m_addListboxCount);
 			MessageBox(message);
-			m_outputListboxCount = 0;
-			m_edit_previousExtension.SetReadOnly();
+			m_addListboxCount = 0;
+			m_cPreviousExtension.SetReadOnly();
 		}
 	}
 
 }
 
-/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数(引数:メインダイアログへのハンドル,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
+/// フォルダ参照ダイアログを開き、フォルダパスを得るための関数
+///(引数:ダイアログへのハンドル,フォルダパスを格納するための文字列,ダイアログのオプションフラグ,ダイアログの上部に表示する文字列、戻り値:パスの取得が成功すればtrue)
 BOOL CExtensionChangeDlg::SelectFolder(HWND hWnd,LPTSTR lpSelectPath,UINT nFlag,LPCTSTR lpTitle)
 {
 	LPMALLOC pMalloc;
@@ -276,13 +277,13 @@ void CExtensionChangeDlg::OnDropFiles(HDROP hDropInfo)
 		FileSearch(path);
 	}
 
-	if (m_outputListboxCount) 
+	if (m_addListboxCount) 
 	{
 		CString message = _T("");
-		message.Format(_T("%d個のファイルパスを追加しました"), m_outputListboxCount);
+		message.Format(_T("%d個のファイルパスを追加しました"), m_addListboxCount);
 		MessageBox(message);
-		m_outputListboxCount = 0;
-		m_edit_previousExtension.SetReadOnly();
+		m_addListboxCount = 0;
+		m_cPreviousExtension.SetReadOnly();
 	}
 	CDialogEx::OnDropFiles(hDropInfo);
 }
@@ -331,7 +332,7 @@ void CExtensionChangeDlg::FileSearch(CString strPath)
 /// 変換ボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 {
-	int listboxCount = m_list_filePath.GetCount();
+	int listboxCount = m_convertFilePath.GetCount();
 
 	if (listboxCount <= 0) return;
 
@@ -339,13 +340,13 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	UpdateData();
 
-	Conversion extensionConversion = Conversion(m_text_previousExtension, m_text_afterExtension);
+	Conversion extensionConversion = Conversion(m_previousExtension, m_afterExtension);
 
 	int errCode = 0, errCount = 0, notErrCount = 0;
 
 	for (int i = 0; i < listboxCount; i++)
 	{
-		m_list_filePath.GetText(i, filePath);
+		m_convertFilePath.GetText(i, filePath);
 		errCode = extensionConversion.RenameExtension(filePath);
 		if (errCode) 
 		{
@@ -369,20 +370,20 @@ void CExtensionChangeDlg::OnBnClickedConversionFileButton()
 
 	MessageBox(message);
 	ClearListbox();
-	m_edit_previousExtension.SetReadOnly(FALSE);
+	m_cPreviousExtension.SetReadOnly(FALSE);
 }
 
 /// クリアボタンを押したときに呼び出される関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::OnBnClickedClearButton()
 {
 	ClearListbox();
-	m_edit_previousExtension.SetReadOnly(FALSE);
+	m_cPreviousExtension.SetReadOnly(FALSE);
 }
 
 /// リストボックスに表示されているパスをすべて削除する関数(引数:なし、戻り値:なし)
 void CExtensionChangeDlg::ClearListbox() 
 {
-	m_list_filePath.ResetContent();
+	m_convertFilePath.ResetContent();
 	m_setFileList.clear();
 }
 
@@ -396,11 +397,11 @@ void CExtensionChangeDlg::AddListbox(CString filePath)
 	{ //既にリストボックスに存在
 		return;
 	}
-	else if (m_text_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) 
+	else if (m_previousExtension == _T("") && fileName.ReverseFind(_T('.')) != -1) 
 	{ //変換前拡張子がなし、判定したいファイルの拡張子はあり
 		return;
 	}
-	else if (m_text_previousExtension != _T("") &&  m_text_previousExtension != fileExtension)
+	else if (m_previousExtension != _T("") &&  m_previousExtension != fileExtension)
 	{ //変換前拡張子があり、変換前拡張子と実際の拡張子が異なる
 		return;
 	}
@@ -409,8 +410,8 @@ void CExtensionChangeDlg::AddListbox(CString filePath)
 		bool res = m_setFileList.insert(filePath).second;
 		if (res)
 		{
-			m_outputListboxCount++;
-			m_list_filePath.AddString(filePath);
+			m_addListboxCount++;
+			m_convertFilePath.AddString(filePath);
 		}
 	}
 }
