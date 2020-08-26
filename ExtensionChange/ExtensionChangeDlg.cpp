@@ -55,8 +55,8 @@ END_MESSAGE_MAP()
 CExtensionChangeDlg::CExtensionChangeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_EXTENSIONCHANGE_DIALOG, pParent)
 	
-	, m_previousExtension(_T(""))
-	, m_afterExtension(_T(""))
+	, m_previousExtension(_T("116"))
+	, m_afterExtension(_T("198"))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
